@@ -1,9 +1,9 @@
 <?php
-$PageTitle="LogIn";
+$PageTitle="BajaContenido";
 include_once('../elements/header.php');
 ?>
 
-    <title>Contando Aciertos - Menú</title>
+    <title>Contando Aciertos - Baja de Contenido</title>
     </head>
 
     <?php

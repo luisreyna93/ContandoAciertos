@@ -1,9 +1,9 @@
 <?php
-$PageTitle="LogIn";
+$PageTitle="EdicionCursosyGrupos";
 include_once('../elements/header.php');
 ?>
 
-    <title>Contando Aciertos - Menú</title>
+    <title>Contando Aciertos - Edición de Cursos y Grupos</title>
     </head>
 
     <?php
