@@ -49,8 +49,9 @@ include_once('../elements/header.php');
                             <li><a href="registroContenido.php">Contenido</a></li>
                         </ul>
                     </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
                     <li><a href="quienessomos.php">Cerrar Sesión</a></li>
-
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
