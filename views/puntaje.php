@@ -1,9 +1,9 @@
 <?php
-$PageTitle="LogIn";
+$PageTitle="Puntaje";
 include_once('../elements/header.php');
 ?>
 
-    <title>Contando Aciertos - Menú</title>
+    <title>Contando Aciertos - Puntaje</title>
     </head>
 
     <?php

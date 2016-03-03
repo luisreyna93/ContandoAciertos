@@ -1,9 +1,9 @@
 <?php
-$PageTitle="LogIn";
+$PageTitle="RegistroCursosyGrupos";
 include_once('../elements/header.php');
 ?>
 
-    <title>Contando Aciertos - Menú</title>
+    <title>Contando Aciertos - Registro Cursos y Grupos</title>
     </head>
 
     <?php

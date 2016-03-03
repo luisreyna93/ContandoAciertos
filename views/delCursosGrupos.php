@@ -1,9 +1,9 @@
 <?php
-$PageTitle="LogIn";
+$PageTitle="BajaCursosyGrupos";
 include_once('../elements/header.php');
 ?>
 
-    <title>Contando Aciertos - Menú</title>
+    <title>Contando Aciertos - Baja de Cursos y Grupos</title>
     </head>
 
     <?php
