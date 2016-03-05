@@ -1,24 +1,27 @@
 <?php
-echo 'entro';
-class LoginController
-{
+include_once('../DB/db.php');
+
+//echo 'entro a controller ';
+$action=  $_GET['action'];
+//echo $action;
+$action();
     function invoke()
     {
-        $this->redirect('views/login.php');
+        redirect('../views/login.php');
     }
-    function indexAction() {
-        echo 'edf';
-       $this->_view->word = "hello world";
-       //or
-       // $this->getView()->word = "hello world";
-   }
-    function loginAction()
+    function login()
     {
-        echo 'entro';
-        $username = $this->request->get('username');
-        $password = $this->request->get('password');
-
-        $this->loadModel('users');
+        $username = $_GET['username'];
+        $password = $_GET['pass'];
+        $db = new Db();
+        $rows = $db -> select("SELECT `nombre` FROM `usuario` WHERE username='".mysql_escape_string($username)."' and password='".mysql_escape_string($password) ."'");
+        if(sizeof($rows)==0){
+            //login fail
+            echo "login fail";
+        }else{
+            redirect('../views/menu.php');
+        }
+        /*$this->loadModel('users');
         if ($this->users->validate($username, $password))
         {
             $userData = $this->users->fetch($username);
@@ -29,10 +32,10 @@ class LoginController
         {
             $this->view->message = 'Invalid login';
             $this->view->render('error');
-        }
+        }*/
     }
 
-    function logoutAction()
+    function logout()
     {
         if (AuthStorage::logged())
         {
@@ -50,4 +53,3 @@ class LoginController
        header('Location: ' . $url, true, $statusCode);
        die();
     }
-}

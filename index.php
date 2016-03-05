@@ -1,6 +1,6 @@
 <?php
 
-// index.php file  
-include_once("Controllers/loginController.php");
-$controller = new loginController();  
-$controller->invoke();  
+// index.php file 
+
+header('Location: ' . 'Controllers/loginController.php?action=invoke', true, $statusCode);
+die(); 

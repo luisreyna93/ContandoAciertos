@@ -15,11 +15,12 @@ include_once('../elements/header.php');
     <h1 class="title-heading">Contando Aciertos</h1>
 
       <form class="form-signin" action="../Controllers/loginController.php">
+        <input type="hidden" name="action" value="login">
       	<h2 class="form-signin-heading">Iniciar Sesión</h2>
         <label for="inputUsername" class="sr-only">Matrícula o Nómina</label>
-        <input type="username" id="inputUsername" class="form-control" placeholder="A0+ / L0+" required autofocus>
+        <input type="username" id="inputUsername" name="username" class="form-control" placeholder="A0+ / L0+" required autofocus>
         <label for="inputPassword" class="sr-only">Contraseña</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <input type="password" id="inputPassword" name="pass" class="form-control" placeholder="Password" required>
         <div class="checkbox">
           <label>
             <input type="checkbox" value="remember-me"> Guardar Sesión
