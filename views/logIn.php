@@ -14,7 +14,7 @@ include_once('../elements/header.php');
 
     <h1 class="title-heading">Contando Aciertos</h1>
 
-      <form class="form-signin" action="menu.php">
+      <form class="form-signin" action="../Controllers/loginController.php">
       	<h2 class="form-signin-heading">Iniciar Sesión</h2>
         <label for="inputUsername" class="sr-only">Matrícula o Nómina</label>
         <input type="username" id="inputUsername" class="form-control" placeholder="A0+ / L0+" required autofocus>
