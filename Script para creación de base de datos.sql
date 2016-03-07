@@ -7,7 +7,8 @@
 --
 -- Estructura de tabla para la tabla `Materia`
 --
-
+create database `TRIVIA`;
+use `TRIVIA`;
 CREATE TABLE IF NOT EXISTS `Materia` (
 `idMateria` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `nombre` varchar(20) NOT NULL,
