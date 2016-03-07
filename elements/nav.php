@@ -43,7 +43,7 @@
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="logIn.php">Cerrar Sesión</a></li>
+                    <li><a href="logIn.php">Cerrar Sesión <span class="glyphicon glyphicon-log-out"></span></a></li>
                 </ul>
 
             </div><!-- /.navbar-collapse -->
