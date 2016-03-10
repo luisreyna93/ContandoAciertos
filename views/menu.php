@@ -56,7 +56,7 @@ include_once('../elements/header.php');
           welcomeMessage.html('¡Bienvenido ' + jsonData.firstName + '!');
         },
         error: function(message) {
-          alert(message.statusText);
+          window.location.href = 'logIn.php';
         }
       });
     });
