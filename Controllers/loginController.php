@@ -21,8 +21,8 @@ $action();
         }else{
           session_start();
 
-          if (!isset($_SESSION['currentUser'])) {
-            $_SESSION['currentUser'] = $userame;
+          if (!isset($_SESSION['username'])) {
+            $_SESSION['username'] = $username;
             $_SESSION['firstName'] = $row["nombre"];
             $_SESSION['lastName'] = $row["apellido"];
           }
