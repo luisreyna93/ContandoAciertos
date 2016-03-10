@@ -11,42 +11,19 @@ include_once('../elements/header.php');
     ?>
 
     <body>
-    </br>
-    </br>
-    </br>
+    </br></br></br></br></br></br></br></br></br>
     <div class="col-xs-4">
     <div class="jumbotron">
-      <h1>Hello, world!</h1>
-      <p>...</p>
-      <p><a class="btn btn-primary btn-lg pull-right" href="#" role="button">Learn more</a></p>
-    </div>
-    </div>
-    <div class="col-xs-4">
-    <div class="jumbotron">
-      <h1>Hello, world!</h1>
-      <p>...</p>
-      <p><a class="btn btn-primary btn-lg pull-right" href="#" role="button">Learn more</a></p>
+      <h1>Juego</h1>
+      <p>Responde un cuestionario, seleccionando algún tema de tus cursos.</p>
+      <p><a class="btn btn-primary btn-lg pull-right" href="#" role="button">Ir</a></p>
     </div>
     </div>
     <div class="col-xs-4">
     <div class="jumbotron">
-      <h1>Hello, world!</h1>
-      <p>...</p>
-      <p><a class="btn btn-primary btn-lg pull-right" href="#" role="button">Learn more</a></p>
-    </div>
-    </div>
-    <div class="col-xs-4">
-    <div class="jumbotron">
-      <h1>Hello, world!</h1>
-      <p>...</p>
-      <p><a class="btn btn-primary btn-lg pull-right" href="#" role="button">Learn more</a></p>
-    </div>
-    </div>
-    <div class="col-xs-4">
-    <div class="jumbotron">
-      <h1>Hello, world!</h1>
-      <p>...</p>
-      <p><a class="btn btn-primary btn-lg pull-right" href="#" role="button">Learn more</a></p>
+      <h1>Puntaje</h1>
+      <p>Revisa la tabla de puntajes.</p>
+      <p><a class="btn btn-primary btn-lg pull-right" href="#" role="button" href="puntaje.php">Ir</a></p>
     </div>
     </div>
     <div class="col-xs-4">

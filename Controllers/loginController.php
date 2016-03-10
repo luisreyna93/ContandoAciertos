@@ -14,12 +14,20 @@ $action();
         $username = $_GET['username'];
         $password = $_GET['pass'];
         $db = new Db();
-        $rows = $db -> select("SELECT `nombre` FROM `usuario` WHERE username='".mysql_escape_string($username)."' and password='".mysql_escape_string($password) ."'");
+        $rows = $db -> select("SELECT nombre apellido FROM usuario WHERE username='".mysql_escape_string($username)."' and password='".mysql_escape_string($password) ."'");
         if(sizeof($rows)==0){
             //login fail
             echo "login fail";
         }else{
-            redirect('../views/menu.php');
+          session_start();
+
+          if (!isset($_SESSION['currentUser'])) {
+            $_SESSION['currentUser'] = $userame;
+            $_SESSION['firstName'] = $row["nombre"];
+            $_SESSION['lastName'] = $row["apellido"];
+          }
+
+          redirect('../views/menu.php');
         }
         /*$this->loadModel('users');
         if ($this->users->validate($username, $password))
