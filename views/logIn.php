@@ -7,7 +7,7 @@ include_once('../elements/header.php');
 	<link href="../css/logIn.css" rel="stylesheet">
 
     <title>Contando Aciertos - Inicio de Sesión</title>
-    
+
     </head>
 
     <div class="container">

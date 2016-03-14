@@ -16,11 +16,34 @@ include_once('../elements/header.php');
     </br></br></br>
     <link rel = 'import' href = '../elements/comboBox.html'>
     <div class = 'container'>
-      <h1>Click the filter icon <small>(<i class = 'glyphicon glyphicon-filter'></i>)</small></h1>
+      <center><h1> Tabla de Puntajes </h1></center>
+      </br></br></br>
+      <div id = 'comboBox-selectors'>
+        <label class='col-xs-3 control-label'>Materia</label>
+          <div class='col-xs-5 selectContainer'>
+              <select class='form-control' name='color'>
+                  <option value=''>Elije una materia</option>
+                  <option value='black'>1</option>
+                  <option value='green'>2</option>
+                  <option value='red'>3</option>
+              </select>
+          </div>
+          </br></br>
+          <label class='col-xs-3 control-label'>Tema</label>
+            <div class='col-xs-5 selectContainer'>
+                <select class='form-control' name='color'>
+                    <option value=''>Elije un tema</option>
+                    <option value='black'>1</option>
+                    <option value='green'>2</option>
+                    <option value='red'>3</option>
+                </select>
+            </div>
+      </div>
+      </br></br></br>
 			<div class = 'col-md-15'>
 				<div class = 'panel panel-success'>
 					<div class = 'panel-heading'>
-						<h3 class = 'panel-title'>Tasks</h3>
+						<h3 class = 'panel-title'>Resultados</h3>
 						<div class = 'pull-right'>
 							<span class = 'clickable filter' data-toggle = 'tooltip' title = 'Toggle table filter' data-container = 'body'>
 								<i class = 'glyphicon glyphicon-filter'></i>
