@@ -44,6 +44,29 @@ include_once('../elements/header.php');
 
   <div id = 'cuestionario'>
     Cuestionario
+
+    <div class='container'>
+      <div id = 'seccion-pregunta' class='row'>
+        <h1>Pregunta</h1>
+        <p>La pregunta:</p>
+      </div>
+      <div id = 'seccion-respuestas' class='row'>
+        <h1>Respuestas</h1>
+        <div class='radio'>
+          <label><input type='radio' name='optradio'>Option 1</label>
+        </div>
+        <div class='radio'>
+          <label><input type='radio' name='optradio'>Option 2</label>
+        </div>
+        <div class='radio disabled'>
+          <label><input type='radio' name='optradio' disabled>Option 3</label>
+        </div>
+      </div>
+      <br><br>
+      <div id = 'seccion-control' class='row'>
+        <button class='btn btn-default'>Siguiente</button>
+      </div>
+    </div>
   </div>
 
     <body>
