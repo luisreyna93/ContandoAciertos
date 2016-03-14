@@ -137,6 +137,26 @@ include_once('../elements/header.php');
 	 </div>
   </body>
 
+  <script type = 'text/javascript'>
+    $(document).on('ready', function() {
+      var welcomeMessage = $('#welcomeMessage');
+
+      $.ajax({
+        type: 'POST',
+        url: '../Controllers/sessionController.php',
+        dataType: 'json',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+          // welcomeMessage.html('¡Bienvenido ' + jsonData.firstName + '!');
+        },
+        error: function(message) {
+          window.location.href = 'logIn.php';
+        }
+      });
+    });
+
+  </script>
+
 <?php
 include_once('../elements/footer.php');
 ?>

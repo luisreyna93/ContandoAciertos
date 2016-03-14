@@ -49,7 +49,7 @@ include_once('../elements/header.php');
 
       $.ajax({
         type: 'POST',
-        url: '../Controllers/menuController.php',
+        url: '../Controllers/sessionController.php',
         dataType: 'json',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
