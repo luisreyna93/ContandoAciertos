@@ -6,6 +6,7 @@ include_once('../elements/header.php');
     <title>Contando Aciertos - Puntaje</title>
     <script type = 'text/javascript' src = '../js/puntaje.js'></script>
     <link type = 'text/css' rel = 'stylesheet' href = '../css/puntaje.css'>
+    <link type = 'text/css' rel = 'stylesheet' href = '../css/footerHeader.css'>
   </head>
 
   <?php
