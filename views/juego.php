@@ -37,11 +37,32 @@ include_once('../elements/header.php');
     </br></br></br>
     <div class='form-group'>
         <div class='col-xs-5 col-xs-offset-6'>
-            <button type='submit' class='btn btn-default'>Comenzar juego</button>
+            <button id = 'initGame' class='btn btn-default'>Comenzar juego</button>
         </div>
     </div>
+  </div>
+
+  <div id = 'cuestionario'>
+    Cuestionario
+  </div>
 
     <body>
+
+    <script>
+      $(document).on('ready', function() {
+        var cuestionario = $('#cuestionario');
+        var menu = $('#menu');
+        var initGameButton = $('#initGame');
+
+        cuestionario.hide();
+
+        initGameButton.on('click', function() {
+          menu.hide();
+          cuestionario.show();
+        });
+      });
+
+    </script>
 
 <?php
 include_once('../elements/footer.php');
