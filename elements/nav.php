@@ -8,7 +8,7 @@
                 <span class='icon-bar'></span>
                 <span class='icon-bar'></span>
             </button>
-            <a class='navbar-brand' href='#'>Contando Aciertos</a>
+            <a class='navbar-brand' href='menu.php'>Contando Aciertos</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
