@@ -12,12 +12,21 @@ include_once('../elements/header.php');
     ?>
 
     <body>
-    	<ul class="nav nav-pills">
-			<li class="active"><a href="#">Home</a></li>
-			<li><a href="#">Menu 1</a></li>
-			<li><a href="#">Menu 2</a></li>
-			<li><a href="#">Menu 3</a></li>
-		</ul>
+    	<div id="registroAlumnos" class="container">
+	    	<ul class="nav nav-pills nav-justified">
+				<li class="active"><a data-toggle="pill" href="#Maestros">Maestros</a></li>
+				<li><a data-toggle="pill" href="#Alumnos">Alumnos</a></li>
+			</ul>
+
+			<div class="tab-content">
+				<div id="Maestros" class="tab-pane fade in active">
+					Maestros
+				</div>
+				<div id="Alumnos" class="tab-pane fade">
+					Alumnos
+				</div>
+			</div>
+		</div>
     </body>
 
 <?php
