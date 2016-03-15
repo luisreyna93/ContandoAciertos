@@ -1,4 +1,22 @@
-#registroAlumnos {
+#registroUsuarios {
 	margin: auto;
 	width: 80%;
+}
+
+#registroMaestros {
+	margin: auto;
+	width: 40%;
+}
+
+#moverGruposDerecha {
+	position: relative;
+	margin-bottom: 10px;
+	top: 25px;
+	width: 100%;
+}
+
+#moverGruposIzquierda {
+	position: relative;
+	top: 25px;
+	width: 100%;
 }
