@@ -1,4 +1,9 @@
-#registroAlumnos {
+#registroUsuarios {
 	margin: auto;
 	width: 80%;
+}
+
+#registroMaestros {
+	margin: auto;
+	width: 40%;
 }
