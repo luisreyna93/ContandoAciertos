@@ -86,7 +86,7 @@ include_once('../elements/header.php');
 						</div>
 						<div class="col-sm-2 col-sm-offset-5">
 							<div class="form-group">
-								<button class="btn btn-primary btn-lg" id="moverGruposDerecha">Crear maestro</button>
+								<button class="btn btn-primary btn-lg" id="crearMaestro">Crear maestro</button>
 							</div>
 						</div>
 					</div>
@@ -157,7 +157,7 @@ include_once('../elements/header.php');
 						</div>
 						<div class="col-sm-2 col-sm-offset-5">
 							<div class="form-group">
-								<button class="btn btn-primary btn-lg" id="moverGruposDerecha">Crear alumno</button>
+								<button class="btn btn-primary btn-lg" id="crearAlumno">Crear alumno</button>
 							</div>
 						</div>
 					</div>
