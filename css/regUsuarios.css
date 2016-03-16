@@ -20,3 +20,8 @@
 	top: 25px;
 	width: 100%;
 }
+
+#gruposPosibles {
+	position: relative;
+	top: 20px;
+}
