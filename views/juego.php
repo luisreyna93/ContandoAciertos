@@ -4,6 +4,7 @@ include_once('../elements/header.php');
 ?>
 
     <title>Contando Aciertos - Juego</title>
+    <link rel='stylesheet' type='text/css' href='../css/juego.css'>
     </head>
 
     <?php
@@ -42,29 +43,31 @@ include_once('../elements/header.php');
     </div>
   </div>
 
-  <div id = 'cuestionario'>
-    Cuestionario
-
-    <div class='container'>
+  <div id = 'cuestionario' class='container'>
+    <div>
+      <h1 id='headerPregunta' class="text-center">Pregunta</h1>
       <div id = 'seccion-pregunta' class='row'>
-        <h1>Pregunta</h1>
         <p>La pregunta:</p>
       </div>
+      <h1 id='headerRespuesta' class="text-center">Respuestas:</h1>
       <div id = 'seccion-respuestas' class='row'>
-        <h1>Respuestas</h1>
         <div class='radio'>
-          <label><input type='radio' name='optradio'>Option 1</label>
+          <label><input type='radio' name='optradio'>Option 1Option 1Option 1Option 1Option 1Option 1Option 1Option 1Option 1Option 1</label>
         </div>
         <div class='radio'>
           <label><input type='radio' name='optradio'>Option 2</label>
         </div>
-        <div class='radio disabled'>
-          <label><input type='radio' name='optradio' disabled>Option 3</label>
+        <div class='radio'>
+          <label><input type='radio' name='optradio'>Option 3</label>
+        </div>
+        <div class='radio'>
+          <label><input type='radio' name='optradio'>Option 4</label>
         </div>
       </div>
       <br><br>
       <div id = 'seccion-control' class='row'>
-        <button class='btn btn-default'>Siguiente</button>
+        <button id='sigPregunta' class='btn btn-default'>Siguiente</button>
+        <button id='terminar' class='btn btn-default'>Terminar</button>
       </div>
     </div>
   </div>
@@ -76,12 +79,34 @@ include_once('../elements/header.php');
         var cuestionario = $('#cuestionario');
         var menu = $('#menu');
         var initGameButton = $('#initGame');
+        var nextButton = $('#sigPregunta');
+        var finishButton = $('#terminar');
+        var headPregunta = $('#headerPregunta');
+
+        var pregunta = 1;
 
         cuestionario.hide();
+        finishButton.hide();
 
         initGameButton.on('click', function() {
           menu.hide();
           cuestionario.show();
+          headPregunta.html('Pregunta ' + pregunta + ':');
+        });
+
+        nextButton.on('click', function() {
+          pregunta += 1;
+          // Hacer update a pregunta y respuestas
+          headPregunta.html('Pregunta ' + pregunta + ':');
+
+          if (pregunta >= 10) {
+            nextButton.hide();
+            finishButton.show();
+          }
+        });
+
+        finishButton.on('click', function() {
+          headPregunta.html('Fin del Cuestionario');
         });
       });
 
