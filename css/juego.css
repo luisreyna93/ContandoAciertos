@@ -1,0 +1,16 @@
+#cuestionario {
+	margin: auto;
+  width: 50%;
+  padding: 5px;
+}
+
+#seccion-pregunta, #seccion-respuestas {
+  width: 100%;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: 1px solid black;
+}
+
+#seccion-control {
+  text-align: center;
+}
