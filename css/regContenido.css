@@ -1,3 +1,12 @@
+#registroContenido {
+	margin: auto;
+	width: 80%;
+}
+
 #crearPregunta {
+	width: 100%;
+}
+
+#crearTema {
 	width: 100%;
 }
