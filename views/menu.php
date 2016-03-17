@@ -21,7 +21,7 @@ include_once('../elements/header.php');
       <div class='jumbotron'>
         <h1>Juego</h1>
         <p>Responde un cuestionario, seleccionando algún tema de tus cursos.</p>
-        <p><a class='btn btn-primary btn-lg pull-right' href='#' role='button'>Ir</a></p>
+        <p><a class='btn btn-primary btn-lg pull-right' href='juego.php' role='button'>Ir</a></p>
       </div>
     </div>
 
@@ -29,7 +29,7 @@ include_once('../elements/header.php');
       <div class='jumbotron'>
         <h1>Puntaje</h1>
         <p>Revisa la tabla de puntajes.</p>
-        <p><a class='btn btn-primary btn-lg pull-right' href='#' role='button' href='puntaje.php'>Ir</a></p>
+        <p><a class='btn btn-primary btn-lg pull-right' href='puntaje.php' role='button' href='puntaje.php'>Ir</a></p>
       </div>
     </div>
 
