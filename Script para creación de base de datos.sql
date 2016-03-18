@@ -72,7 +72,6 @@ CREATE TABLE IF NOT EXISTS `Pregunta` (
   `opcionB` varchar(80) NOT NULL,
   `opcionC` varchar(80) NOT NULL,
   `opcionD` varchar(80) NOT NULL,
-  `correcta` varchar(1) NOT NULL,
   FOREIGN KEY(`idTema`) REFERENCES `Tema`(`idTema`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
