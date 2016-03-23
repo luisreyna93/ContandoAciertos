@@ -34,7 +34,7 @@ include_once('../elements/header.php');
 								<input type="text" class="form-control" id="apellidosMaestro" />
 							</div>
 						</div>
-						
+
 						<div class="col-sm-2 col-sm-offset-5">
 							<div class="form-group">
 								<button class="btn btn-primary btn-lg" id="editarAlumno">Registrar Curso</button>
@@ -47,31 +47,22 @@ include_once('../elements/header.php');
 					<h3 class="text-center">Edición</h3>
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
-							<label>Nombre:</label>
-							<div class="form-group">
-								<input type="input" class="form-control" id="passwordAlumno" />
-							</div>
-							<div class="form-group">
-								<label for="selMatricula">Grupo:</label>
-								<select class="form-control" id="selMatricula">
-							    	<option>Grupo1</option>
-							    	<option>Grupo1</option>
-							    	<option>Grupo1</option>
-							    	<option>Grupo1</option>
+                            <div class="form-group">
+								<label for="selMatricula">Materia:</label>
+								<select class="form-control" id="setMateria">
 							  	</select>
 						    </div>
-
+							<label>Grupo:</label>
+							<div class="form-group">
+								<input type="input" class="form-control" id="nombreGrupo" />
+							</div>
 							<div class="form-group">
 								<label for="selMatricula">Maestro:</label>
-								<select class="form-control" id="selMatricula">
-							    	<option>Maestro1</option>
-							    	<option>Maestro1</option>
-							    	<option>Maestro1</option>
-							    	<option>Maestro1</option>
+								<select class="form-control" id="selMaestro">
 							  	</select>
 						    </div>
 						</div>
-						
+
 						<div class="col-sm-2 col-sm-offset-5">
 							<div class="form-group">
 								<button class="btn btn-primary btn-lg" id="editarAlumno">Registrar Grupo</button>
