@@ -175,6 +175,8 @@ $(document).on('ready', function() {
                     feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
                 }
             });
+        }  else {
+            feedback.html('El campo \'Tema\' es obligatorio');
         }
     });
 
@@ -232,6 +234,8 @@ $(document).on('ready', function() {
                     feedback.html('Pregunta No Registrada<br>Verifique la existencia previa o la conexión a la Base de Datos');
                 }
             });
+        } else {
+            feedback.html('Los campos \'Pregunta\', \'Opción A\' y  \'Opción B\' son obligatorios');
         }
     });
 
