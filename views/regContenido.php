@@ -28,10 +28,6 @@ include_once('../elements/nav.php');
                         <div class='form-group'>
                             <label for='selMateria'>Materia:</label>
                             <select class='form-control' id='selMateria'>
-                                <option>Materia 1</option>
-                                <option>Materia 2</option>
-                                <option>Materia 3</option>
-                                <option>Materia 4</option>
                             </select>
                         </div>
                     </div>
@@ -55,10 +51,6 @@ include_once('../elements/nav.php');
                         <div class='form-group'>
                             <label for='selMateria2'>Materia:</label>
                             <select class='form-control' id='selMateria2'>
-                                <option>Materia 1</option>
-                                <option>Materia 2</option>
-                                <option>Materia 3</option>
-                                <option>Materia 4</option>
                             </select>
                         </div>
                     </div>
@@ -66,10 +58,6 @@ include_once('../elements/nav.php');
                         <div class='form-group'>
                             <label for='selTema'>Tema:</label>
                             <select class='form-control' id='selTema'>
-                                <option>Tema 1</option>
-                                <option>Tema 2</option>
-                                <option>Tema 3</option>
-                                <option>Tema 4</option>
                             </select>
                         </div>
                     </div>
@@ -121,8 +109,15 @@ $(document).on('ready', function() {
     var welcomeMessage = $('#welcomeMessage');
     var comboMaterias = $('#selMateria');
     var comboMaterias2 = $('#selMateria2');
+    var comboTemas = $('#selTema');
     var crearTemaButton = $('#crearTema');
+    var crearPreguntaButton = $('#crearPregunta');
     var temaInput = $('#tema');
+    var preguntaInput = $('#pregunta');
+    var opcionAInput = $('#opcionA');
+    var opcionBInput = $('#opcionB');
+    var opcionCInput = $('#opcionC');
+    var opcionDInput = $('#opcionD');
     var feedback = $('#feedback');
 
     $.ajax({
@@ -152,6 +147,8 @@ $(document).on('ready', function() {
 
             comboMaterias.html(comboContent);
             comboMaterias2.html(comboContent);
+
+            comboMaterias2.trigger('change');
         },
         error: function(message) {
             alert(message);
@@ -178,9 +175,63 @@ $(document).on('ready', function() {
                     feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
                 }
             });
+        }
+    });
 
-        } else {
-            alert('NO');
+    comboMaterias2.change(function() {
+        if (comboMaterias2.html() != '') {
+            var parameters = {
+                'idMateria' : comboMaterias2.val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/getTopicsForQuestionController.php',
+                dataType: 'json',
+                data: parameters,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success: function(jsonData) {
+                    var comboContent = ''
+
+                    if (jsonData.numTemas != 0) {
+                        for (i = 0; i < jsonData.numTemas; i++) {
+                            comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].tema + '</option>';
+                        }
+                    }
+
+                    comboTemas.html(comboContent);
+                },
+                error: function(message) {
+                    feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                }
+            });
+        }
+    });
+
+    crearPreguntaButton.on('click', function() {
+        var parameters = {
+            'idTema' : comboTemas.val(),
+            'pregunta' : preguntaInput.val(),
+            'opA' : opcionAInput.val(),
+            'opB' : opcionBInput.val(),
+            'opC' : opcionCInput.val(),
+            'opD' : opcionDInput.val()
+        };
+
+        if (preguntaInput.val() != "" && opcionAInput.val() != "" && opcionBInput.val() != "") {
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/createQuestionController.php',
+                dataType: 'json',
+                data: parameters,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success: function(jsonData) {
+                    feedback.html('Pregunta Registrada');
+                },
+                error: function(message) {
+                    feedback.html('Pregunta No Registrada<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                }
+            });
         }
     });
 
