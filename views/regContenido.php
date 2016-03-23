@@ -106,7 +106,6 @@ include_once('../elements/nav.php');
 
 <script type = 'text/javascript'>
 $(document).on('ready', function() {
-    var welcomeMessage = $('#welcomeMessage');
     var comboMaterias = $('#selMateria');
     var comboMaterias2 = $('#selMateria2');
     var comboTemas = $('#selTema');
@@ -238,7 +237,6 @@ $(document).on('ready', function() {
             feedback.html('Los campos \'Pregunta\', \'Opción A\' y  \'Opción B\' son obligatorios');
         }
     });
-
 });
 
 </script>
