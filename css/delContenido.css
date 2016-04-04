@@ -1,0 +1,16 @@
+#edicionContenido {
+	margin: auto;
+	width: 80%;
+}
+
+#editarTema {
+	width: 100%;
+}
+
+#editarPregunta {
+	width: 100%;
+}
+
+.table th, td {
+    text-align: center;
+}
