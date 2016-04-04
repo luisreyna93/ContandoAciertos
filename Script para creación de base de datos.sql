@@ -11,7 +11,7 @@ create database `TRIVIA`;
 use `TRIVIA`;
 CREATE TABLE IF NOT EXISTS `Materia` (
 `idMateria` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `nombre` varchar(20) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
   `clave` varchar(20) NOT NULL UNIQUE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

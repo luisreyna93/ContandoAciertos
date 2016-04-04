@@ -1,9 +1,9 @@
 <?php
-$PageTitle="RegistroCursosyGrupos";
+$PageTitle="EdicionCursosyGrupos";
 include_once('../elements/header.php');
 ?>
 
-    <title>Contando Aciertos - Registro Cursos y Grupos</title>
+    <title>Contando Aciertos - Edición Cursos y Grupos</title>
     <link type = 'text/css' rel = 'stylesheet' href = '../css/footerHeader.css'>
     </head>
 
