@@ -44,7 +44,7 @@ include_once('../elements/header.php');
 				</div>
 
 				<div id="grupos" class="tab-pane fade">
-					<h3 class="text-center">Edición</h3>
+					<h3 class="text-center">Registro</h3>
 					<div class="row">
 						<div class="col-sm-6 col-sm-offset-3">
                             <div class="form-group">
