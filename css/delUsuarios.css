@@ -1,0 +1,17 @@
+#edicionUsuarios {
+	margin: auto;
+	width: 80%;
+}
+
+#edicionMaestros {
+	margin: auto;
+	width: 40%;
+}
+
+#bajaAlumno {
+    margin-left: -15px;
+}
+
+#bajaMaestro {
+    margin-left: -15px;
+}
