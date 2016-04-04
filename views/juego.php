@@ -12,7 +12,7 @@ include_once('../elements/header.php');
     ?>
   </br></br></br>
   <div id = 'menu' class = 'container'>
-    <center><h1> Tabla de Puntajes </h1></center>
+    <center><h1> Juego de Trivia </h1></center>
     </br></br></br>
     <div id = 'comboBox-selectors'>
       <label class='col-xs-3 control-label'>Materia</label>
