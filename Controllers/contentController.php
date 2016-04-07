@@ -1,9 +1,6 @@
 <?php
 header('Content-type: application/json');
 
-session_start();
-$username = $_SESSION['username'];
-
 $dbServername = 'localhost';
 $dbUsername = 'root';
 $dbPassword = '';

@@ -49,10 +49,6 @@ include_once('../elements/header.php');
 							<div class="form-group">
 								<label for="selMateriaMaestro">Materia:</label>
 								<select class="form-control" id="selMateriaMaestro">
-							    	<option>Materia 1</option>
-							    	<option>Materia 2</option>
-							    	<option>Materia 3</option>
-							    	<option>Materia 4</option>
 							  	</select>
 						    </div>
 						</div>
@@ -60,10 +56,6 @@ include_once('../elements/header.php');
 							<div class="form-group">
 								<label for="selPosiblesMaestro">Grupos posibles:</label>
 								<select multiple class="form-control" id="selPosiblesMaestro">
-							    	<option>Grupo 1</option>
-							    	<option>Grupo 2</option>
-							    	<option>Grupo 3</option>
-							    	<option>Grupo 4</option>
 							  	</select>
 						    </div>
 						</div>
@@ -77,10 +69,6 @@ include_once('../elements/header.php');
 							<div class="form-group">
 								<label for="selActualesMaestro">Grupos actuales:</label>
 								<select multiple class="form-control" id="selActualesMaestro">
-							    	<option>Grupo 1</option>
-							    	<option>Grupo 2</option>
-							    	<option>Grupo 3</option>
-							    	<option>Grupo 4</option>
 							  	</select>
 						    </div>
 						</div>
@@ -120,10 +108,6 @@ include_once('../elements/header.php');
 							<div class="form-group">
 								<label for="selMateriaAlumno">Materia:</label>
 								<select class="form-control" id="selMateriaAlumno">
-							    	<option>Materia 1</option>
-							    	<option>Materia 2</option>
-							    	<option>Materia 3</option>
-							    	<option>Materia 4</option>
 							  	</select>
 						    </div>
 						</div>
@@ -131,10 +115,6 @@ include_once('../elements/header.php');
 							<div class="form-group" id="gruposPosibles">
 								<label for="selPosiblesAlumno">Grupos posibles:</label>
 								<select class="form-control" id="selPosiblesAlumno">
-							    	<option>Grupo 1</option>
-							    	<option>Grupo 2</option>
-							    	<option>Grupo 3</option>
-							    	<option>Grupo 4</option>
 							  	</select>
 						    </div>
 						</div>
@@ -148,10 +128,6 @@ include_once('../elements/header.php');
 							<div class="form-group">
 								<label for="selActualesAlumno">Grupos actuales:</label>
 								<select multiple class="form-control" id="selActualesAlumno">
-							    	<option>Grupo 1</option>
-							    	<option>Grupo 2</option>
-							    	<option>Grupo 3</option>
-							    	<option>Grupo 4</option>
 							  	</select>
 						    </div>
 						</div>
@@ -162,10 +138,120 @@ include_once('../elements/header.php');
 						</div>
 					</div>
 				</div>
+                <div id = 'feedback' class = 'text-center'></div>
 			</div>
 		</div>
     </body>
 
+    <script type = 'text/javascript'>
+        $(document).on('ready', function() {
+            // var claveInput = $('#claveCurso');
+            // var nombreInput = $('#nombreCurso');
+            // var crearGrupoButton = $('#crearGrupo');
+            // var crearCursoButton = $('#crearCurso');
+            var comboMaterias = $('#selMateriaMaestro');
+            var comboMaterias2 = $('#selMateriaAlumno');
+            var posiblesGruposMaestro = $("#selPosiblesMaestro");
+            var posiblesGruposAlumno = $("#selPosiblesAlumno");
+            // var grupoInput = $('#nombreGrupo');
+            var feedback = $('#feedback');
+
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/sessionController.php',
+                dataType: 'json',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success: function(jsonData) {
+                    feedback.html('');
+                },
+                error: function(message) {
+                    window.location.href = 'logIn.php';
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/contentController.php',
+                dataType: 'json',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success: function(jsonData) {
+                    var comboContent = ''
+
+                    for (i = 0; i < jsonData.numMaterias; i++) {
+                        comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].materia + '</option>';
+                    }
+
+                    comboMaterias.html(comboContent);
+                    comboMaterias2.html(comboContent);
+
+                    comboMaterias.trigger('change');
+                    comboMaterias2.trigger('change');
+                },
+                error: function(message) {
+                    alert(message);
+                }
+            });
+
+            comboMaterias.change(function() {
+                if (comboMaterias.html() != '') {
+                    var parameters = {
+                        'forType' : 1,
+                        'idMateria' : comboMaterias.val()
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../Controllers/getGroupsForCourseController.php',
+                        dataType: 'json',
+                        data: parameters,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        success: function(jsonData) {
+                            var comboContent = ''
+
+                            for (i = 0; i < jsonData.numGrupos; i++) {
+                                comboContent += '<option value=' + jsonData[i].id + '>' + 'Grupo ' + jsonData[i].numero + '</option>';
+                            }
+
+                            posiblesGruposMaestro.html(comboContent);
+                        },
+                        error: function(message) {
+                            feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                        }
+                    });
+                }
+            });
+
+            comboMaterias2.change(function() {
+                if (comboMaterias2.html() != '') {
+                    var parameters = {
+                        'forType' : 2,
+                        'idMateria' : comboMaterias2.val()
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../Controllers/getGroupsForCourseController.php',
+                        dataType: 'json',
+                        data: parameters,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        success: function(jsonData) {
+                            var comboContent = ''
+
+                            for (i = 0; i < jsonData.numGrupos; i++) {
+                                comboContent += '<option value=' + jsonData[i].id + '>' + 'Grupo ' + jsonData[i].numero + '</option>';
+                            }
+
+                            posiblesGruposAlumno.html(comboContent);
+                        },
+                        error: function(message) {
+                            feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
 <?php
 include_once('../elements/footer.php');
 ?>
