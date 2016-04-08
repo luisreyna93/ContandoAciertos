@@ -1,11 +1,30 @@
 <?php
 $PageTitle="BajaCursosyGrupos";
 include_once('../elements/header.php');
+
+    # Establishing the connection to the Database
+    function connect() {
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "Trivia";
+
+        $connection = new mysqli($servername, $username, $password, $dbname);
+
+        // Check connection
+        if ($connection->connect_error) {
+            return null;
+        }
+        else {
+            return $connection;
+        }
+    }
 ?>
 
     <title>Contando Aciertos - Baja de Cursos y Grupos</title>
     <link type = 'text/css' rel = 'stylesheet' href = '../css/footerHeader.css'>
     <link type = 'text/css' rel = 'stylesheet' href = '../css/delCursosGrupos.css'>
+    
     </head>
 
     <?php
@@ -32,27 +51,37 @@ include_once('../elements/header.php');
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>Clave 1</td>
-                                <td>Nombre 1</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Clave 2</td>
-                                <td>Nombre 2</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Clave 3</td>
-                                <td>Nombre 3</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
+                            <?php
+                                $conn = connect();
+                            
+                                $sql = "SELECT * FROM Materia ORDER BY clave;";
+                                
+                                $result = $conn -> query($sql);
+                                $num = $result->num_rows;
+                                
+                                while($num > 0) {
+                                    $row = $result -> fetch_assoc();
+                            ?>
+                                <tr>
+                                    <td>
+                                        <?php
+                                            echo $row['clave'];
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                            echo $row['nombre'];
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <label><input type="checkbox" value=""></label>
+                                    </td>
+                                </tr>
+                            <?php
+                                    $num = $num - 1;
+                                }
+                                $conn -> close();
+                            ?>
                             </tbody>
                         </table>
 
@@ -71,11 +100,33 @@ include_once('../elements/header.php');
                             <div class="form-group">
 								<label for="selMateria">Materia:</label>
 								<select class="form-control" id="selMateria">
+                                    <?php
+                                        $conn = connect();
+                                    
+                                        $sql = "SELECT * FROM Materia ORDER BY nombre;";
+                                        
+                                        $result = $conn -> query($sql);
+                                        $num = $result->num_rows;
+                                        
+                                        while($num > 0) {
+                                            $row = $result -> fetch_assoc();
+                                    ?>
+                                    <option value = <?php echo $row['idMateria']?>>
+                                        <?php
+                                            echo $row['nombre'];
+                                        ?>
+                                    </option>
+                                    <?php
+                                            $num = $num - 1;
+                                        }
+                                        
+                                        $conn -> close();
+                                    ?>
 							  	</select>
 						    </div>
 						</div>
                         
-                        <table class="table table-striped table-bordered">
+                        <table class="table table-striped table-bordered" id="tablaBajasGrupos">
                             <thead>
                             <tr>
                                 <th class="col-md-5">Número de Grupo</th>
@@ -124,3 +175,43 @@ include_once('../elements/header.php');
 <?php
 include_once('../elements/footer.php');
 ?>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#selMateria").change(function(){
+            var 
+            
+            $("#tablaBajasGrupos").html("");
+            
+            var tabla = "<thead><tr>";
+            tabla += "<th class=\"col-md-5\">Número de Grupo</th>";
+            tabla += "<th class=\"col-md-5\">Nombre de Maestro</th>";
+            tabla += "<th>¿Borrar?</th></tr></thead>";
+            
+            <?php
+                $conn = connect();
+            
+                $sql = "SELECT * FROM Grupo WHERE ;";
+                
+                $result = $conn -> query($sql);
+                $num = $result->num_rows;
+                
+                while($num > 0) {
+                    $row = $result -> fetch_assoc();
+            ?>
+            <option value = <?php echo $row['clave']?>>
+                <?php
+                    echo $row['nombre'];
+                ?>
+            </option>
+            <?php
+                    $num = $num - 1;
+                }
+                
+                $conn -> close();
+            ?>
+            
+            $("#tablaBajasGrupos").html(tabla);
+        }); 
+    });
+</script>
