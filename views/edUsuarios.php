@@ -26,11 +26,7 @@ include_once('../elements/header.php');
 						<div class="col-sm-6 col-sm-offset-3">
 							<div class="form-group">
 								<label for="selNomina">Nómina:</label>
-								<select class="form-control" id="selNomina">
-							    	<option>L01234567</option>
-							    	<option>L01234568</option>
-							    	<option>L01234569</option>
-							    	<option>L01234570</option>
+								<select class="form-control" id="selNomina" onchange="getTeacherDesc(this.value,this.options[this.selectedIndex].innerHTML)">
 							  	</select>
 						    </div>
 							<label>Contraseña:</label>
@@ -53,11 +49,8 @@ include_once('../elements/header.php');
 						<div class="col-sm-6 col-sm-offset-3">
 							<div class="form-group">
 								<label for="selMateriaMaestro">Materia:</label>
-								<select class="form-control" id="selMateriaMaestro">
-							    	<option>Materia 1</option>
-							    	<option>Materia 2</option>
-							    	<option>Materia 3</option>
-							    	<option>Materia 4</option>
+								<select class="form-control" id="selMateriaMaestro" onchange="getGroupFromMateria(this.value)">
+							    	
 							  	</select>
 						    </div>
 						</div>
@@ -65,10 +58,7 @@ include_once('../elements/header.php');
 							<div class="form-group">
 								<label for="selPosiblesMaestro">Grupos posibles:</label>
 								<select multiple class="form-control" id="selPosiblesMaestro">
-							    	<option>Grupo 1</option>
-							    	<option>Grupo 2</option>
-							    	<option>Grupo 3</option>
-							    	<option>Grupo 4</option>
+							    	
 							  	</select>
 						    </div>
 						</div>
@@ -82,10 +72,7 @@ include_once('../elements/header.php');
 							<div class="form-group">
 								<label for="selActualesMaestro">Grupos actuales:</label>
 								<select multiple class="form-control" id="selActualesMaestro">
-							    	<option>Grupo 1</option>
-							    	<option>Grupo 2</option>
-							    	<option>Grupo 3</option>
-							    	<option>Grupo 4</option>
+							    	
 							  	</select>
 						    </div>
 						</div>
@@ -175,7 +162,90 @@ include_once('../elements/header.php');
 			</div>
 		</div>
     </body>
-
+ <script type = 'text/javascript'>
+ 	var idMaestro;
+    $(document).on('ready', function() {
+    	  $.ajax({
+            type: 'POST',
+            url: '../Controllers/getTeachersController.php',
+            dataType: 'json',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+                var comboContent = '';
+                for (i = 0; i < jsonData.numMaestros; i++) {
+                	var o = new Option(jsonData[i].nombre + ' ' + jsonData[i].apellido, jsonData[i].id );
+					/// jquerify the DOM object 'o' so we can use the html method
+					$(o).html(jsonData[i].nombre + ' ' + jsonData[i].apellido);
+					$("#selNomina").append(o);
+                }
+    			getTeacherDesc($("#selNomina").val(),$("#selNomina option:selected").html());
+            },
+            error: function(message) {
+            }
+        });
+    	  $.ajax({
+            type: 'POST',
+            url: '../Controllers/getMateriasController.php',
+            dataType: 'json',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+                var comboContent = '';
+                for (i = 0; i < jsonData.numMaestros; i++) {
+                	var o = new Option(jsonData[i].nombre , jsonData[i].id );
+					/// jquerify the DOM object 'o' so we can use the html method
+					$(o).html(jsonData[i].nombre);
+					$("#selMateriaMaestro").append(o);
+                }
+    			getGroupFromMateria($("#selMateriaMaestro").val());
+            },
+            error: function(message) {
+            }
+        })
+    });
+    function getTeacherDesc(value,text){
+    	idMaestro=value;
+    	$("#nombreMaestro").val(text.split(" ")[0]);
+    	$("#apellidosMaestro").val(text.split(" ")[1]);
+    	$.ajax({
+            type: 'POST',
+            url: '../Controllers/getTeachersDescController.php',
+            dataType: 'json',
+            data: {"idMaestro": idMaestro},
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+            	$("#selActualesMaestro").empty();
+                for (i = 0; i < jsonData.numMaestros; i++) {
+                	var o = new Option(jsonData[i].grupo , jsonData[i].id );
+					/// jquerify the DOM object 'o' so we can use the html method
+					$(o).html(jsonData[i].grupo );
+					$("#selActualesMaestro").append(o);
+                }
+            },
+            error: function(message) {
+            }
+        });
+    }
+    function getGroupFromMateria(value){
+    	$("#selPosiblesMaestro").empty();
+		$.ajax({
+            type: 'POST',
+            url: '../Controllers/getGroupsFromMaterias.php',
+            dataType: 'json',
+            data: {"idMateria": value},
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+                for (i = 0; i < jsonData.numMaestros; i++) {
+                	var o = new Option(jsonData[i].grupo , jsonData[i].id );
+					/// jquerify the DOM object 'o' so we can use the html method
+					$(o).html(jsonData[i].grupo );
+					$("#selPosiblesMaestro").append(o);
+                }
+            },
+            error: function(message) {
+            }
+        });
+    }
+    </script>
 <?php
 include_once('../elements/footer.php');
 ?>

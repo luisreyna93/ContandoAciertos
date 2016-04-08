@@ -22,6 +22,12 @@ include_once('../elements/header.php');
 				<div id="cursos" class="tab-pane fade in active">
 					<h3 class="text-center">Edicion</h3>
 					<div class="row">
+						<div class="col-sm-6 col-sm-offset-3">
+							<select class="form-control" id="selMateria" onchange="getMateriaDesc(this.selectedIndex)">
+							</select>
+						</div>
+					</div>
+					<div class="row">
 						<div class="col-sm-3 col-sm-offset-3">
 							<label>Nombre:</label>
 							<div class="form-group">
@@ -31,14 +37,13 @@ include_once('../elements/header.php');
 						<div class="col-sm-3">
                             <div class="form-group">
 								<label for="selClave">Clave:</label>
-								<select class="form-control" id="selClave">
-							  	</select>
+								<input type="text" class="form-control" id="clave"/>
 						    </div>
 						</div>
 
 						<div class="col-sm-2 col-sm-offset-5">
 							<div class="form-group">
-								<button class="btn btn-primary btn-lg" id="crearCurso">Editar Curso</button>
+								<button onclick="editarCurso()" class="btn btn-primary btn-lg" id="crearCurso">Editar Curso</button>
 							</div>
 						</div>
 					</div>
@@ -67,7 +72,7 @@ include_once('../elements/header.php');
 
 						<div class="col-sm-2 col-sm-offset-5">
 							<div class="form-group">
-								<button class="btn btn-primary btn-lg" id="crearGrupo">Editar Grupo</button>
+								<button onclick="editarMateria()" class="btn btn-primary btn-lg" id="crearGrupo">Editar Grupo</button>
 							</div>
 						</div>
 					</div>
@@ -77,7 +82,54 @@ include_once('../elements/header.php');
 			</div>
 		</div>
     </body>
-
+ <script type = 'text/javascript'>
+ 	var data;
+ 	function onload(){
+ 		$("#selMateria").empty();
+ 		$.ajax({
+            type: 'POST',
+            url: '../Controllers/getMateriasController.php',
+            dataType: 'json',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+                for (i = 0; i < jsonData.numMaestros; i++) {
+                	var o = new Option(jsonData[i].nombre, jsonData[i].id );
+					/// jquerify the DOM object 'o' so we can use the html method
+					$(o).html(jsonData[i].nombre);
+					$("#selMateria").append(o);
+                }
+                data= jsonData;
+                $("#nombreCurso").val(jsonData[0]["nombre"]);
+                $("#clave").val(jsonData[0]["clave"]);
+            },	
+            error: function(message) {
+            }
+        });
+ 	}
+    $(document).on('ready', function() {
+    	  onload();
+    });
+    function getMateriaDesc(value){
+    	$("#nombreCurso").val(data[value]["nombre"]);
+        $("#clave").val(data[value]["clave"]);
+    }
+    function editarCurso(){
+    	$.ajax({
+            type: 'POST',
+            url: '../Controllers/editMaterias.php',
+            dataType: 'json',
+            data: {"idMateria":$("#selMateria").val(), "nombre": $("#nombreCurso").val(),"clave": $("#clave").val()},
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+                //todo: push notification of success.
+                onload();
+                $.notify("Modificación con éxito", "success");
+            },	
+            error: function(message) {
+            }
+        });
+    }
+    </script>
 <?php
 include_once('../elements/footer.php');
 ?>
