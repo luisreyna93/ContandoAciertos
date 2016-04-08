@@ -61,8 +61,8 @@ include_once('../elements/header.php');
 						</div>
 						<div class="col-sm-2">
 							<div class="form-group">
-								<button class="btn btn-primary btn-md" id="moverGruposDerecha">Mover <span class="glyphicon glyphicon-arrow-right"></span></button>
-								<button class="btn btn-primary btn-md" id="moverGruposIzquierda">Mover <span class="glyphicon glyphicon-arrow-left"></span></button>
+								<button class="btn btn-primary btn-md" id="moverGruposDerechaMaestro">Mover <span class="glyphicon glyphicon-arrow-right"></span></button>
+								<button class="btn btn-primary btn-md" id="moverGruposIzquierdaMaestro">Mover <span class="glyphicon glyphicon-arrow-left"></span></button>
 							</div>
 						</div>
 						<div class="col-sm-2">
@@ -120,8 +120,8 @@ include_once('../elements/header.php');
 						</div>
 						<div class="col-sm-2">
 							<div class="form-group">
-								<button class="btn btn-primary btn-md" id="moverGruposDerecha">Agregar <span class="glyphicon glyphicon-arrow-right"></span></button>
-								<button class="btn btn-primary btn-md" id="moverGruposIzquierda">Quitar <span class="glyphicon glyphicon-arrow-left"></span></button>
+								<button class="btn btn-primary btn-md" id="moverGruposDerechaAlumno">Agregar <span class="glyphicon glyphicon-arrow-right"></span></button>
+								<button class="btn btn-primary btn-md" id="moverGruposIzquierdaAlumno">Quitar <span class="glyphicon glyphicon-arrow-left"></span></button>
 							</div>
 						</div>
 						<div class="col-sm-2">
@@ -153,8 +153,16 @@ include_once('../elements/header.php');
             var comboMaterias2 = $('#selMateriaAlumno');
             var posiblesGruposMaestro = $("#selPosiblesMaestro");
             var posiblesGruposAlumno = $("#selPosiblesAlumno");
+            var actualesGruposMaestro = $('#selActualesMaestro');
+            var actualesGruposAlumno = $('#selActualesAlumno');
+            var moveToActualButton = $("#moverGruposDerechaMaestro");
+            var moveToPossibleButton = $("#moverGruposIzquierdaMaestro");
+            var moveToActualButton2 = $("#moverGruposDerechaAlumno");
+            var moveToPossibleButton2 = $("#moverGruposIzquierdaAlumno");
             // var grupoInput = $('#nombreGrupo');
             var feedback = $('#feedback');
+
+            var courses;
 
             $.ajax({
                 type: 'POST',
@@ -186,6 +194,8 @@ include_once('../elements/header.php');
 
                     comboMaterias.trigger('change');
                     comboMaterias2.trigger('change');
+
+                    courses = jsonData;
                 },
                 error: function(message) {
                     alert(message);
@@ -247,6 +257,46 @@ include_once('../elements/header.php');
                             feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
                         }
                     });
+                }
+            });
+
+            moveToActualButton.on('click', function() {
+                var selItem = posiblesGruposMaestro.prop('selectedIndex');
+
+                if (selItem == -1) {
+                    feedback.html('Elige uno o más grupos de la lista de posibles grupos.<br>Si está vacía, no hay grupos sin maestro asignado para la materia seleccionada.');
+                } else {
+                    $('#selPosiblesMaestro option:selected').remove().appendTo('#selActualesMaestro').removeAttr('selected');
+                }
+            });
+
+            moveToPossibleButton.on('click', function() {
+                var selItem = actualesGruposMaestro.prop('selectedIndex');
+
+                if (selItem == -1) {
+                    feedback.html('No hay grupos actuales.');
+                } else {
+                    $('#selActualesMaestro option:selected').remove().appendTo('#selPosiblesMaestro').removeAttr('selected');
+                }
+            });
+
+            moveToActualButton2.on('click', function() {
+                var selItem = posiblesGruposAlumno.prop('selectedIndex');
+
+                if (selItem == -1) {
+                    feedback.html('Elige un grupo de la lista de posibles grupos.<br>Si está vacía, no hay grupos sin maestro asignado para la materia seleccionada.');
+                } else {
+                    $('#selPosiblesAlumno option:selected').remove().appendTo('#selActualesAlumno').removeAttr('selected');
+                }
+            });
+
+            moveToPossibleButton2.on('click', function() {
+                var selItem = actualesGruposAlumno.prop('selectedIndex');
+
+                if (selItem == -1) {
+                    feedback.html('No hay grupos actuales.');
+                } else {
+                    $('#selActualesAlumno option:selected').remove().appendTo('#selPosiblesAlumno').removeAttr('selected');
                 }
             });
 
