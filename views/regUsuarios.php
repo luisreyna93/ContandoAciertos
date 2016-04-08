@@ -145,10 +145,16 @@ include_once('../elements/header.php');
 
     <script type = 'text/javascript'>
         $(document).on('ready', function() {
-            // var claveInput = $('#claveCurso');
-            // var nombreInput = $('#nombreCurso');
-            // var crearGrupoButton = $('#crearGrupo');
-            // var crearCursoButton = $('#crearCurso');
+            var matriculaInput = $('#matricula');
+            var passwordAlumnoInput = $('#passwordAlumno');
+            var nombreAlumnoInput = $('#nombreAlumno');
+            var apellidosAlumnoInput = $('#apellidosAlumno');
+            var nominaInput = $('#nomina');
+            var passwordMaestroInput = $('#passwordMaestro');
+            var nombreMaestroInput = $('#nombreMaestro');
+            var apellidosMaestroInput = $('#apellidosMaestro');
+            var crearAlumnoButton = $('#crearAlumno');
+            var crearMaestroButton = $('#crearMaestro');
             var comboMaterias = $('#selMateriaMaestro');
             var comboMaterias2 = $('#selMateriaAlumno');
             var posiblesGruposMaestro = $("#selPosiblesMaestro");
@@ -159,10 +165,7 @@ include_once('../elements/header.php');
             var moveToPossibleButton = $("#moverGruposIzquierdaMaestro");
             var moveToActualButton2 = $("#moverGruposDerechaAlumno");
             var moveToPossibleButton2 = $("#moverGruposIzquierdaAlumno");
-            // var grupoInput = $('#nombreGrupo');
             var feedback = $('#feedback');
-
-            var courses;
 
             $.ajax({
                 type: 'POST',
@@ -298,6 +301,82 @@ include_once('../elements/header.php');
                 } else {
                     $('#selActualesAlumno option:selected').remove().appendTo('#selPosiblesAlumno').removeAttr('selected');
                 }
+            });
+
+            crearMaestroButton.on('click', function() {
+                if (nominaInput.val() != '' && passwordMaestroInput.val() != '' && nombreMaestroInput.val() != '' && apellidosMaestroInput.val() != '') {
+                    var groups = [];
+
+                    groups.push($('#selActualesMaestro option').length);
+
+                    $('#selActualesMaestro option').each(function() {
+                        groups.push($(this).prop('value'));
+                    });
+
+                    var parameters = {
+                        'forType' : 1,
+                        'username' : nominaInput.val(),
+                        'password' : passwordMaestroInput.val(),
+                        'nombre' : nombreMaestroInput.val(),
+                        'apellidos' : apellidosMaestroInput.val(),
+                        'grupos' : groups
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../Controllers/createUserController.php',
+                        dataType: 'json',
+                        data: parameters,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        success: function(jsonData) {
+                            feedback.html('Maestro Registrado');
+                        },
+                        error: function(message) {
+                            feedback.html('Maestro No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                        }
+                    });
+                } else {
+                    feedback.html('Los campos \'Nómina\', \'Contraseña\', \'Nombre\' y \'Apellidos\' son obligatorios.')
+                }
+
+            });
+
+            crearAlumnoButton.on('click', function() {
+                if (matriculaInput.val() != '' && passwordAlumnoInput.val() != '' && nombreAlumnoInput.val() != '' && apellidosAlumnoInput.val() != '') {
+                    var groups = [];
+
+                    groups.push($('#selActualesAlumno option').length);
+
+                    $('#selActualesAlumno option').each(function() {
+                        groups.push($(this).prop('value'));
+                    });
+
+                    var parameters = {
+                        'forType' : 2,
+                        'username' :matriculaInput.val(),
+                        'password' : passwordAlumnoInput.val(),
+                        'nombre' : nombreAlumnoInput.val(),
+                        'apellidos' : apellidosAlumnoInput.val(),
+                        'grupos' : groups
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../Controllers/createUserController.php',
+                        dataType: 'json',
+                        data: parameters,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        success: function(jsonData) {
+                            feedback.html('Alumno Registrado');
+                        },
+                        error: function(message) {
+                            feedback.html('Alumno No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                        }
+                    });
+                } else {
+                    feedback.html('Los campos \'Matrícula\', \'Contraseña\', \'Nombre\' y \'Apellidos\' son obligatorios.')
+                }
+
             });
 
         });

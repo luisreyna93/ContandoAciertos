@@ -66,13 +66,12 @@ include_once('../elements/header.php');
 						<div class="col-sm-2 col-sm-offset-5">
 							<div class="form-group">
 								<button class="btn btn-primary btn-lg" id="crearGrupo">Registrar Grupo</button>
-							</div>
-						</div>
-					</div>
-				</div>
-                <div id = 'feedback' class = 'text-center'>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-			</div>
+                <div id = 'feedback' class = 'text-center'></div>
+            </div>
 		</div>
     </body>
 
