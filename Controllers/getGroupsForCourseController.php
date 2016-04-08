@@ -1,6 +1,9 @@
 <?php
 header('Content-type: application/json');
 
+$type = $_POST['forType'];
+$idMateria = $_POST['idMateria'];
+
 $dbServername = 'localhost';
 $dbUsername = 'root';
 $dbPassword = '';
@@ -14,14 +17,19 @@ if ($conn->connect_error) {
     header('HTTP/1.1 500 Bad connection to Database');
     die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 } else {
-    $sql = "SELECT idUsuario, nombre, apellido FROM Usuario WHERE tipo = 'maestro'";
+    if ($type == 1) {
+        $sql = "SELECT idGrupo, numero FROM Grupo WHERE idMaestro = '-1' AND idMateria = '$idMateria'";
+    } else {
+        $sql = "SELECT idGrupo, numero FROM Grupo WHERE idMateria = '$idMateria'";
+    }
+
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        $response = array('numMaestros' => $result -> num_rows);
+        $response = array('numGrupos' => $result -> num_rows);
 
         while($row = $result->fetch_assoc()) {
-            array_push($response, array('nombre' => $row['nombre'], 'apellido' => $row['apellido'], 'id' => $row['idUsuario']));
+            array_push($response, array('numero' => $row['numero'], 'id' => $row['idGrupo']));
         }
 
         echo json_encode($response);
