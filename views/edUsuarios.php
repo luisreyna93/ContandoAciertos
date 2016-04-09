@@ -138,7 +138,7 @@ include_once('../elements/header.php');
 						</div>
 						<div class="col-sm-2 col-sm-offset-5">
 							<div class="form-group">
-								<button class="btn btn-primary btn-lg" id="editarAlumno">Editar alumno</button>
+								<button class="btn btn-primary btn-lg" id="editarAlumno" onclick="editarAlumno()">Editar alumno</button>
 							</div>
 						</div>
 					</div>
@@ -366,6 +366,36 @@ include_once('../elements/header.php');
             'grupos' : groups,
             'userType': 1,
             'id': $('#selNomina').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/updateUser.php',
+            dataType: 'json',
+            data: parameters,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+            },
+            error: function(message) {
+            }
+        });
+    }
+    function editarAlumno(){
+    	var groups = [];
+
+        groups.push($('#selActualesAlumno option').length);
+
+        $('#selActualesAlumno option').each(function() {
+            groups.push($(this).prop('value'));
+        });
+
+    	var parameters = {
+            'password': $('#passwordMaestro').val(),
+            'name': $('#nombreMaestro').val(),
+            'apellido': $('#apellidosMaestro').val(),
+            'grupos' : groups,
+            'userType': 2,
+            'id': $('#selMatricula').val()
         };
 
         $.ajax({
