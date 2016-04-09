@@ -14,7 +14,7 @@ if ($conn->connect_error) {
     header('HTTP/1.1 500 Bad connection to Database');
     die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 } else {
-    $sql = "SELECT idUsuario, nombre, apellido FROM Usuario WHERE idUsuario!=-1 and tipo = 'maestro'";
+    $sql = "SELECT idUsuario, nombre, apellido FROM Usuario WHERE idUsuario!=-1 and tipo = 'alumno'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {

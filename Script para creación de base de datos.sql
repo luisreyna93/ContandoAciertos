@@ -104,4 +104,7 @@ CREATE TABLE IF NOT EXISTS `AlumnoJuegaTema` (
   FOREIGN KEY(`idTema`) REFERENCES `Tema`(`idTema`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+
+INSERT INTO `trivia`.`usuario` (`idUsuario`, `username`, `password`, `nombre`, `apellido`, `tipo`) VALUES (-1, 'eduardo', 'eduardo', 'eduardo', 'eduard', 'maestro');
