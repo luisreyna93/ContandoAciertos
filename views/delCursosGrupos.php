@@ -178,9 +178,35 @@ include_once('../elements/footer.php');
 
 <script type="text/javascript">
     $(document).ready(function(){
+        var tabla = "<thead><tr>";
+        tabla += "<th class=\"col-md-5\">Número de Grupo</th>";
+        tabla += "<th class=\"col-md-5\">Nombre de Maestro</th>";
+        tabla += "<th>¿Borrar?</th></tr></thead>";
+        
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/getGroupsForCourseController.php',
+            dataType: 'json',
+            data: {'idMateria': $("#selMateria").val()},
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+                tabla += "<tbody>";
+                for(var i = 0; i < jsonData.length; i++) {
+                    tabla += "<tr><td>" + jsonData[i].grupo + "</td>";
+                    tabla += "<td>" + jsonData[i].nombreMaestro + "</td>";
+                    tabla += "<td><label><input type=\"checkbox\" value=\"\"></label></td></tr>";
+                }
+                tabla += "</tbody>";
+                
+                $("#tablaBajasGrupos").html(tabla);
+            },
+            error: function(message) {
+                console.log(message.statusText);
+                $("#tablaBajasGrupos").html(tabla);
+            }
+        });
+        
         $("#selMateria").change(function(){
-            var 
-            
             $("#tablaBajasGrupos").html("");
             
             var tabla = "<thead><tr>";
@@ -188,30 +214,28 @@ include_once('../elements/footer.php');
             tabla += "<th class=\"col-md-5\">Nombre de Maestro</th>";
             tabla += "<th>¿Borrar?</th></tr></thead>";
             
-            <?php
-                $conn = connect();
-            
-                $sql = "SELECT * FROM Grupo WHERE ;";
-                
-                $result = $conn -> query($sql);
-                $num = $result->num_rows;
-                
-                while($num > 0) {
-                    $row = $result -> fetch_assoc();
-            ?>
-            <option value = <?php echo $row['clave']?>>
-                <?php
-                    echo $row['nombre'];
-                ?>
-            </option>
-            <?php
-                    $num = $num - 1;
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/getGroupsForCourseController.php',
+                dataType: 'json',
+                data: {'idMateria': $(this).val()},
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success: function(jsonData) {
+                    tabla += "<tbody>";
+                    for(var i = 0; i < jsonData.length; i++) {
+                       tabla += "<tr><td>" + jsonData[i].grupo + "</td>";
+                       tabla += "<td>" + jsonData[i].nombreMaestro + "</td>";
+                       tabla += "<td><label><input type=\"checkbox\" value=\"\"></label></td></tr>";
+                    }
+                    tabla += "</tbody>";
+                    
+                    $("#tablaBajasGrupos").html(tabla);
+                },
+                error: function(message) {
+                    console.log(message.statusText);
+                    $("#tablaBajasGrupos").html(tabla);
                 }
-                
-                $conn -> close();
-            ?>
-            
-            $("#tablaBajasGrupos").html(tabla);
+            });
         }); 
     });
 </script>

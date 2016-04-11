@@ -8,7 +8,7 @@ $grupo = $_POST['grupo'];
 $dbServername = 'localhost';
 $dbUsername = 'root';
 $dbPassword = '';
-$dbName = 'trivia';
+$dbName = 'Trivia';
 
 // Create connection
 $conn = new mysqli($dbServername, $dbUsername, $dbPassword, $dbName);
