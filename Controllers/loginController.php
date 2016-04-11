@@ -24,7 +24,7 @@ if ($conn->connect_error) {
         $row = $result->fetch_assoc();
 
         session_start();
-
+        
         if (!isset($_SESSION['username'])) {
             $_SESSION['username'] = $username;
             $_SESSION['nombre'] = $row["nombre"];

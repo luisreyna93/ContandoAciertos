@@ -21,11 +21,7 @@ include_once('../elements/header.php');
 		<input type="username" id="inputUsername" name="username" class="form-control" placeholder="A0+ / L0+" required autofocus>
 		<label for="inputPassword" class="sr-only">Contraseña</label>
 		<input type="password" id="inputPassword" name="pass" class="form-control" placeholder="Password" required>
-		<div class="checkbox">
-			<label>
-				<input type="checkbox" value="remember-me"> Guardar Sesión
-			</label>
-		</div>
+
 		<button class="btn btn-lg btn-primary btn-block" type="submit" id="logIn">Sign in</button>
 	</div>
 
@@ -53,6 +49,7 @@ $(document).on('ready', function() {
 				window.location.href = 'menu.php';
 			},
 			error: function(message) {
+				alert("ERROR");
 				// window.location.href = 'logIn.php';
 			}
 		});
