@@ -1,63 +1,42 @@
 <?php
-include_once('../DB/db.php');
+header('Content-type: application/json');
 
-//echo 'entro a controller ';
-$action=  $_GET['action'];
-//echo $action;
-$action();
-    function invoke()
-    {
-        redirect('../views/login.php');
-    }
-    function login()
-    {
-        $username = $_GET['username'];
-        $password = $_GET['pass'];
-        $db = new Db();
-        $rows = $db -> select("SELECT nombre apellido FROM usuario WHERE username='".mysql_escape_string($username)."' and password='".mysql_escape_string($password) ."'");
-        if(sizeof($rows)==0){
-            //login fail
-            echo "login fail";
-        }else{
-          session_start();
+$username = $_POST['username'];
+$password = $_POST['password'];
 
-          if (!isset($_SESSION['username'])) {
+$dbServername = 'localhost';
+$dbUsername = 'root';
+$dbPassword = '';
+$dbName = 'trivia';
+
+// Create connection
+$conn = new mysqli($dbServername, $dbUsername, $dbPassword, $dbName);
+
+// Check connection
+if ($conn->connect_error) {
+    header('HTTP/1.1 500 Bad connection to Database');
+    die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+} else {
+    $sql = "SELECT idUsuario, username, nombre, apellido, tipo FROM Usuario WHERE username = '$username' AND password = '$password'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+
+        session_start();
+
+        if (!isset($_SESSION['username'])) {
             $_SESSION['username'] = $username;
-            $_SESSION['firstName'] = $row["nombre"];
-            $_SESSION['lastName'] = $row["apellido"];
-          }
+            $_SESSION['nombre'] = $row["nombre"];
+            $_SESSION['apellido'] = $row["apellido"];
+            $_SESSION['tipo'] = $row["tipo"];
+            $_SESSION['idUsuario'] = $row["idUsuario"];
+        }
 
-          redirect('../views/menu.php');
-        }
-        /*$this->loadModel('users');
-        if ($this->users->validate($username, $password))
-        {
-            $userData = $this->users->fetch($username);
-            AuthStorage::save($username, $userData);
-            $this->redirect('secret_area');
-        }
-        else
-        {
-            $this->view->message = 'Invalid login';
-            $this->view->render('error');
-        }*/
+        echo json_encode("Success");
+    } else {
+        die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
     }
+}
 
-    function logout()
-    {
-        if (AuthStorage::logged())
-        {
-            AuthStorage::remove();
-            $this->redirect('index');
-        }
-        else
-        {
-            $this->view->message = 'You are not logged in.';
-            $this->view->render('error');
-        }
-    }
-    function redirect($url, $statusCode = 303)
-    {
-       header('Location: ' . $url, true, $statusCode);
-       die();
-    }
+?>

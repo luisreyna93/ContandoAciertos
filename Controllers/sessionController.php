@@ -17,12 +17,12 @@ if ($conn->connect_error) {
     header('HTTP/1.1 500 Bad connection to Database');
     die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 } else {
-    $sql = "SELECT nombre, apellido FROM Usuario WHERE username = '$username'";
+    $sql = "SELECT nombre, apellido, tipo FROM Usuario WHERE username = '$username'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
-        $response = array('firstName' => $row['nombre']);
+        $response = array('firstName' => $row['nombre'], 'tipo' => $row['tipo']);
 
         echo json_encode($response);
     } else {
