@@ -15,7 +15,7 @@ $conn = new mysqli($dbServername, $dbUsername, $dbPassword, $dbName);
 // Check connection
 if ($conn->connect_error) {
     header('HTTP/1.1 500 Bad connection to Database');
-    die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
+    die(json_encode(array('message' => 'ERROR', 'code' => 500)));
 } else {
     if ($type == 1) {
         $sql = "SELECT idGrupo, numero FROM Grupo WHERE idMaestro = '-1' AND idMateria = '$idMateria'";
