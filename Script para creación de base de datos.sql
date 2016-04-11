@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `Grupo` (
 `idGrupo` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `idMaestro` int(11) NOT NULL,
   `idMateria` int(11) NOT NULL,
-  `numero` int(11) NOT NULL UNIQUE,
+  `numero` varchar(20) NOT NULL UNIQUE,
   FOREIGN KEY(`idMaestro`) REFERENCES `Usuario`(`idUsuario`),
   FOREIGN KEY(`idMateria`) REFERENCES `Materia`(`idMateria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -104,4 +104,7 @@ CREATE TABLE IF NOT EXISTS `AlumnoJuegaTema` (
   FOREIGN KEY(`idTema`) REFERENCES `Tema`(`idTema`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+
+INSERT INTO `trivia`.`usuario` (`idUsuario`, `username`, `password`, `nombre`, `apellido`, `tipo`) VALUES (-1, 'eduardo', 'eduardo', 'eduardo', 'eduard', 'maestro');

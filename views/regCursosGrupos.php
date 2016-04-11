@@ -66,13 +66,12 @@ include_once('../elements/header.php');
 						<div class="col-sm-2 col-sm-offset-5">
 							<div class="form-group">
 								<button class="btn btn-primary btn-lg" id="crearGrupo">Registrar Grupo</button>
-							</div>
-						</div>
-					</div>
-				</div>
-                <div id = 'feedback' class = 'text-center'>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-			</div>
+                <div id = 'feedback' class = 'text-center'></div>
+            </div>
 		</div>
     </body>
 
@@ -124,10 +123,12 @@ include_once('../elements/header.php');
             dataType: 'json',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             success: function(jsonData) {
-                var comboContent = ''
+                var comboContent = '<option value=-1>--------</option>'
 
                 for (i = 0; i < jsonData.numMaestros; i++) {
-                    comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].nombre + ' ' + jsonData[i].apellido +'</option>';
+                    if (jsonData[i].id != -1) {
+                        comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].nombre + ' ' + jsonData[i].apellido +'</option>';
+                    }
                 }
 
                 comboMaestros.html(comboContent);
@@ -176,7 +177,11 @@ include_once('../elements/header.php');
                     data: parameters,
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     success: function(jsonData) {
-                        feedback.html('Grupo Registrado');
+                        if (comboMaestros.val() == -1) {
+                            feedback.html('Grupo Registrado<br>Recuerda registrar un maestro para este grupo');
+                        } else {
+                            feedback.html('Grupo Registrado');
+                        }
                     },
                     error: function(message) {
                         feedback.html('Grupo No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');

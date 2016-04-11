@@ -185,7 +185,7 @@ include_once('../elements/footer.php');
         
         $.ajax({
             type: 'POST',
-            url: '../Controllers/getGroupsForCourseController.php',
+            url: '../Controllers/getGroupsForCourse2Controller.php',
             dataType: 'json',
             data: {'idMateria': $("#selMateria").val()},
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -216,7 +216,7 @@ include_once('../elements/footer.php');
             
             $.ajax({
                 type: 'POST',
-                url: '../Controllers/getGroupsForCourseController.php',
+                url: '../Controllers/getGroupsForCourse2Controller.php',
                 dataType: 'json',
                 data: {'idMateria': $(this).val()},
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},

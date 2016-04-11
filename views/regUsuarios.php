@@ -49,10 +49,6 @@ include_once('../elements/header.php');
 							<div class="form-group">
 								<label for="selMateriaMaestro">Materia:</label>
 								<select class="form-control" id="selMateriaMaestro">
-							    	<option>Materia 1</option>
-							    	<option>Materia 2</option>
-							    	<option>Materia 3</option>
-							    	<option>Materia 4</option>
 							  	</select>
 						    </div>
 						</div>
@@ -60,27 +56,19 @@ include_once('../elements/header.php');
 							<div class="form-group">
 								<label for="selPosiblesMaestro">Grupos posibles:</label>
 								<select multiple class="form-control" id="selPosiblesMaestro">
-							    	<option>Grupo 1</option>
-							    	<option>Grupo 2</option>
-							    	<option>Grupo 3</option>
-							    	<option>Grupo 4</option>
 							  	</select>
 						    </div>
 						</div>
 						<div class="col-sm-2">
 							<div class="form-group">
-								<button class="btn btn-primary btn-md" id="moverGruposDerecha">Mover <span class="glyphicon glyphicon-arrow-right"></span></button>
-								<button class="btn btn-primary btn-md" id="moverGruposIzquierda">Mover <span class="glyphicon glyphicon-arrow-left"></span></button>
+								<button class="btn btn-primary btn-md" id="moverGruposDerechaMaestro">Mover <span class="glyphicon glyphicon-arrow-right"></span></button>
+								<button class="btn btn-primary btn-md" id="moverGruposIzquierdaMaestro">Mover <span class="glyphicon glyphicon-arrow-left"></span></button>
 							</div>
 						</div>
 						<div class="col-sm-2">
 							<div class="form-group">
 								<label for="selActualesMaestro">Grupos actuales:</label>
 								<select multiple class="form-control" id="selActualesMaestro">
-							    	<option>Grupo 1</option>
-							    	<option>Grupo 2</option>
-							    	<option>Grupo 3</option>
-							    	<option>Grupo 4</option>
 							  	</select>
 						    </div>
 						</div>
@@ -120,10 +108,6 @@ include_once('../elements/header.php');
 							<div class="form-group">
 								<label for="selMateriaAlumno">Materia:</label>
 								<select class="form-control" id="selMateriaAlumno">
-							    	<option>Materia 1</option>
-							    	<option>Materia 2</option>
-							    	<option>Materia 3</option>
-							    	<option>Materia 4</option>
 							  	</select>
 						    </div>
 						</div>
@@ -131,27 +115,19 @@ include_once('../elements/header.php');
 							<div class="form-group" id="gruposPosibles">
 								<label for="selPosiblesAlumno">Grupos posibles:</label>
 								<select class="form-control" id="selPosiblesAlumno">
-							    	<option>Grupo 1</option>
-							    	<option>Grupo 2</option>
-							    	<option>Grupo 3</option>
-							    	<option>Grupo 4</option>
 							  	</select>
 						    </div>
 						</div>
 						<div class="col-sm-2">
 							<div class="form-group">
-								<button class="btn btn-primary btn-md" id="moverGruposDerecha">Agregar <span class="glyphicon glyphicon-arrow-right"></span></button>
-								<button class="btn btn-primary btn-md" id="moverGruposIzquierda">Quitar <span class="glyphicon glyphicon-arrow-left"></span></button>
+								<button class="btn btn-primary btn-md" id="moverGruposDerechaAlumno">Agregar <span class="glyphicon glyphicon-arrow-right"></span></button>
+								<button class="btn btn-primary btn-md" id="moverGruposIzquierdaAlumno">Quitar <span class="glyphicon glyphicon-arrow-left"></span></button>
 							</div>
 						</div>
 						<div class="col-sm-2">
 							<div class="form-group">
 								<label for="selActualesAlumno">Grupos actuales:</label>
 								<select multiple class="form-control" id="selActualesAlumno">
-							    	<option>Grupo 1</option>
-							    	<option>Grupo 2</option>
-							    	<option>Grupo 3</option>
-							    	<option>Grupo 4</option>
 							  	</select>
 						    </div>
 						</div>
@@ -162,10 +138,249 @@ include_once('../elements/header.php');
 						</div>
 					</div>
 				</div>
+                <div id = 'feedback' class = 'text-center'></div>
 			</div>
 		</div>
     </body>
 
+    <script type = 'text/javascript'>
+        $(document).on('ready', function() {
+            var matriculaInput = $('#matricula');
+            var passwordAlumnoInput = $('#passwordAlumno');
+            var nombreAlumnoInput = $('#nombreAlumno');
+            var apellidosAlumnoInput = $('#apellidosAlumno');
+            var nominaInput = $('#nomina');
+            var passwordMaestroInput = $('#passwordMaestro');
+            var nombreMaestroInput = $('#nombreMaestro');
+            var apellidosMaestroInput = $('#apellidosMaestro');
+            var crearAlumnoButton = $('#crearAlumno');
+            var crearMaestroButton = $('#crearMaestro');
+            var comboMaterias = $('#selMateriaMaestro');
+            var comboMaterias2 = $('#selMateriaAlumno');
+            var posiblesGruposMaestro = $("#selPosiblesMaestro");
+            var posiblesGruposAlumno = $("#selPosiblesAlumno");
+            var actualesGruposMaestro = $('#selActualesMaestro');
+            var actualesGruposAlumno = $('#selActualesAlumno');
+            var moveToActualButton = $("#moverGruposDerechaMaestro");
+            var moveToPossibleButton = $("#moverGruposIzquierdaMaestro");
+            var moveToActualButton2 = $("#moverGruposDerechaAlumno");
+            var moveToPossibleButton2 = $("#moverGruposIzquierdaAlumno");
+            var feedback = $('#feedback');
+
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/sessionController.php',
+                dataType: 'json',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success: function(jsonData) {
+                    feedback.html('');
+                },
+                error: function(message) {
+                    window.location.href = 'logIn.php';
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/contentController.php',
+                dataType: 'json',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success: function(jsonData) {
+                    var comboContent = ''
+
+                    for (i = 0; i < jsonData.numMaterias; i++) {
+                        comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].materia + '</option>';
+                    }
+
+                    comboMaterias.html(comboContent);
+                    comboMaterias2.html(comboContent);
+
+                    comboMaterias.trigger('change');
+                    comboMaterias2.trigger('change');
+
+                    courses = jsonData;
+                },
+                error: function(message) {
+                    alert(message);
+                }
+            });
+
+            comboMaterias.change(function() {
+                if (comboMaterias.html() != '') {
+                    var parameters = {
+                        'forType' : 1,
+                        'idMateria' : comboMaterias.val()
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../Controllers/getGroupsForCourseController.php',
+                        dataType: 'json',
+                        data: parameters,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        success: function(jsonData) {
+                            var comboContent = ''
+
+                            for (i = 0; i < jsonData.numGrupos; i++) {
+                                comboContent += '<option value=' + jsonData[i].id + '>' + 'Grupo ' + jsonData[i].numero + '</option>';
+                            }
+
+                            posiblesGruposMaestro.html(comboContent);
+                        },
+                        error: function(message) {
+                            feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                        }
+                    });
+                }
+            });
+
+            comboMaterias2.change(function() {
+                if (comboMaterias2.html() != '') {
+                    var parameters = {
+                        'forType' : 2,
+                        'idMateria' : comboMaterias2.val()
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../Controllers/getGroupsForCourseController.php',
+                        dataType: 'json',
+                        data: parameters,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        success: function(jsonData) {
+                            var comboContent = ''
+
+                            for (i = 0; i < jsonData.numGrupos; i++) {
+                                comboContent += '<option value=' + jsonData[i].id + '>' + 'Grupo ' + jsonData[i].numero + '</option>';
+                            }
+
+                            posiblesGruposAlumno.html(comboContent);
+                        },
+                        error: function(message) {
+                            feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                        }
+                    });
+                }
+            });
+
+            moveToActualButton.on('click', function() {
+                var selItem = posiblesGruposMaestro.prop('selectedIndex');
+
+                if (selItem == -1) {
+                    feedback.html('Elige uno o más grupos de la lista de posibles grupos.<br>Si está vacía, no hay grupos sin maestro asignado para la materia seleccionada.');
+                } else {
+                    $('#selPosiblesMaestro option:selected').remove().appendTo('#selActualesMaestro').removeAttr('selected');
+                }
+            });
+
+            moveToPossibleButton.on('click', function() {
+                var selItem = actualesGruposMaestro.prop('selectedIndex');
+
+                if (selItem == -1) {
+                    feedback.html('No hay grupos actuales.');
+                } else {
+                    $('#selActualesMaestro option:selected').remove().appendTo('#selPosiblesMaestro').removeAttr('selected');
+                }
+            });
+
+            moveToActualButton2.on('click', function() {
+                var selItem = posiblesGruposAlumno.prop('selectedIndex');
+
+                if (selItem == -1) {
+                    feedback.html('Elige un grupo de la lista de posibles grupos.<br>Si está vacía, no hay grupos sin maestro asignado para la materia seleccionada.');
+                } else {
+                    $('#selPosiblesAlumno option:selected').remove().appendTo('#selActualesAlumno').removeAttr('selected');
+                }
+            });
+
+            moveToPossibleButton2.on('click', function() {
+                var selItem = actualesGruposAlumno.prop('selectedIndex');
+
+                if (selItem == -1) {
+                    feedback.html('No hay grupos actuales.');
+                } else {
+                    $('#selActualesAlumno option:selected').remove().appendTo('#selPosiblesAlumno').removeAttr('selected');
+                }
+            });
+
+            crearMaestroButton.on('click', function() {
+                if (nominaInput.val() != '' && passwordMaestroInput.val() != '' && nombreMaestroInput.val() != '' && apellidosMaestroInput.val() != '') {
+                    var groups = [];
+
+                    groups.push($('#selActualesMaestro option').length);
+
+                    $('#selActualesMaestro option').each(function() {
+                        groups.push($(this).prop('value'));
+                    });
+
+                    var parameters = {
+                        'forType' : 1,
+                        'username' : nominaInput.val(),
+                        'password' : passwordMaestroInput.val(),
+                        'nombre' : nombreMaestroInput.val(),
+                        'apellidos' : apellidosMaestroInput.val(),
+                        'grupos' : groups
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../Controllers/createUserController.php',
+                        dataType: 'json',
+                        data: parameters,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        success: function(jsonData) {
+                            feedback.html('Maestro Registrado');
+                        },
+                        error: function(message) {
+                            feedback.html('Maestro No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                        }
+                    });
+                } else {
+                    feedback.html('Los campos \'Nómina\', \'Contraseña\', \'Nombre\' y \'Apellidos\' son obligatorios.')
+                }
+
+            });
+
+            crearAlumnoButton.on('click', function() {
+                if (matriculaInput.val() != '' && passwordAlumnoInput.val() != '' && nombreAlumnoInput.val() != '' && apellidosAlumnoInput.val() != '') {
+                    var groups = [];
+
+                    groups.push($('#selActualesAlumno option').length);
+
+                    $('#selActualesAlumno option').each(function() {
+                        groups.push($(this).prop('value'));
+                    });
+
+                    var parameters = {
+                        'forType' : 2,
+                        'username' :matriculaInput.val(),
+                        'password' : passwordAlumnoInput.val(),
+                        'nombre' : nombreAlumnoInput.val(),
+                        'apellidos' : apellidosAlumnoInput.val(),
+                        'grupos' : groups
+                    };
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '../Controllers/createUserController.php',
+                        dataType: 'json',
+                        data: parameters,
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        success: function(jsonData) {
+                            feedback.html('Alumno Registrado');
+                        },
+                        error: function(message) {
+                            feedback.html('Alumno No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                        }
+                    });
+                } else {
+                    feedback.html('Los campos \'Matrícula\', \'Contraseña\', \'Nombre\' y \'Apellidos\' son obligatorios.')
+                }
+
+            });
+
+        });
+    </script>
 <?php
 include_once('../elements/footer.php');
 ?>

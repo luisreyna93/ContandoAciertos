@@ -184,7 +184,7 @@ $(document).on('ready', function() {
             var parameters = {
                 'idMateria' : comboMaterias2.val()
             };
-
+            
             $.ajax({
                 type: 'POST',
                 url: '../Controllers/getTopicsForQuestionController.php',

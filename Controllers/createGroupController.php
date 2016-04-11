@@ -25,7 +25,11 @@ if ($conn->connect_error) {
         header('HTTP/1.1 500 Bad connection to Database');
         die(json_encode(array('message' => 'Este grupo ya existe para la materia dada')));
     } else {
-        $sql = "INSERT INTO Grupo (idMaestro, idMateria, numero) VALUES ('$idMaestro', '$idMateria', '$grupo')";
+        if ($grupo >= 0) {
+            $sql = "INSERT INTO Grupo (idMaestro, idMateria, numero) VALUES ('$idMaestro', '$idMateria', '$grupo')";
+        } else {
+            $sql = "INSERT INTO Grupo (idMateria, numero) VALUES ('$idMateria', '$grupo')";
+        }
 
         if (mysqli_query($conn, $sql)) {
             echo json_encode("New record created successfully");
