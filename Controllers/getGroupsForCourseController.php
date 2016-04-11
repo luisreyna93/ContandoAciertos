@@ -34,8 +34,7 @@ if ($conn->connect_error) {
 
         echo json_encode($response);
     } else {
-        header('HTTP/1.1 306 No groups found for given course.');
-        die(json_encode(array('message' => 'ERROR', 'code' => 306)));
+        die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
     }
 }
 
