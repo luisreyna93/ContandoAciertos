@@ -24,7 +24,7 @@ include_once('../elements/header.php');
     <title>Contando Aciertos - Baja de Cursos y Grupos</title>
     <link type = 'text/css' rel = 'stylesheet' href = '../css/footerHeader.css'>
     <link type = 'text/css' rel = 'stylesheet' href = '../css/delCursosGrupos.css'>
-    
+
     </head>
 
     <?php
@@ -53,12 +53,12 @@ include_once('../elements/header.php');
                             <tbody>
                             <?php
                                 $conn = connect();
-                            
+
                                 $sql = "SELECT * FROM Materia ORDER BY clave;";
-                                
+
                                 $result = $conn -> query($sql);
                                 $num = $result->num_rows;
-                                
+
                                 while($num > 0) {
                                     $row = $result -> fetch_assoc();
                             ?>
@@ -102,12 +102,12 @@ include_once('../elements/header.php');
 								<select class="form-control" id="selMateria">
                                     <?php
                                         $conn = connect();
-                                    
+
                                         $sql = "SELECT * FROM Materia ORDER BY nombre;";
-                                        
+
                                         $result = $conn -> query($sql);
                                         $num = $result->num_rows;
-                                        
+
                                         while($num > 0) {
                                             $row = $result -> fetch_assoc();
                                     ?>
@@ -119,13 +119,13 @@ include_once('../elements/header.php');
                                     <?php
                                             $num = $num - 1;
                                         }
-                                        
+
                                         $conn -> close();
                                     ?>
 							  	</select>
 						    </div>
 						</div>
-                        
+
                         <table class="table table-striped table-bordered" id="tablaBajasGrupos">
                             <thead>
                             <tr>
@@ -171,7 +171,7 @@ include_once('../elements/header.php');
 			</div>
 		</div>
     </body>
-    
+
 <?php
 include_once('../elements/footer.php');
 ?>
@@ -182,7 +182,7 @@ include_once('../elements/footer.php');
         tabla += "<th class=\"col-md-5\">Número de Grupo</th>";
         tabla += "<th class=\"col-md-5\">Nombre de Maestro</th>";
         tabla += "<th>¿Borrar?</th></tr></thead>";
-        
+
         $.ajax({
             type: 'POST',
             url: '../Controllers/getGroupsForCourse2Controller.php',
@@ -197,7 +197,7 @@ include_once('../elements/footer.php');
                     tabla += "<td><label><input type=\"checkbox\" value=\"\"></label></td></tr>";
                 }
                 tabla += "</tbody>";
-                
+
                 $("#tablaBajasGrupos").html(tabla);
             },
             error: function(message) {
@@ -205,15 +205,15 @@ include_once('../elements/footer.php');
                 $("#tablaBajasGrupos").html(tabla);
             }
         });
-        
+
         $("#selMateria").change(function(){
             $("#tablaBajasGrupos").html("");
-            
+
             var tabla = "<thead><tr>";
             tabla += "<th class=\"col-md-5\">Número de Grupo</th>";
             tabla += "<th class=\"col-md-5\">Nombre de Maestro</th>";
             tabla += "<th>¿Borrar?</th></tr></thead>";
-            
+
             $.ajax({
                 type: 'POST',
                 url: '../Controllers/getGroupsForCourse2Controller.php',
@@ -228,7 +228,7 @@ include_once('../elements/footer.php');
                        tabla += "<td><label><input type=\"checkbox\" value=\"\"></label></td></tr>";
                     }
                     tabla += "</tbody>";
-                    
+
                     $("#tablaBajasGrupos").html(tabla);
                 },
                 error: function(message) {
@@ -236,6 +236,6 @@ include_once('../elements/footer.php');
                     $("#tablaBajasGrupos").html(tabla);
                 }
             });
-        }); 
+        });
     });
 </script>
