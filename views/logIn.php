@@ -33,6 +33,18 @@ $(document).on('ready', function() {
 	var usernameInput = $("#inputUsername");
 	var passwordInput = $("#inputPassword");
 
+	$.ajax({
+        type: 'POST',
+        url: '../Controllers/sessionController.php',
+        dataType: 'json',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+			window.location.href = 'menu.php';
+        },
+        error: function(message) {
+        }
+    });
+
 	loginButton.on('click', function() {
 		var parameters = {
 			'username' : usernameInput.val(),
