@@ -86,13 +86,14 @@ include_once('../elements/nav.php');
 var data;
 function onload(){
     $("#selMateria").empty();
+
     $.ajax({
         type: 'POST',
         url: '../Controllers/getMateriasController.php',
         dataType: 'json',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
-            for (i = 0; i < jsonData.numMaestros; i++) {
+            for (i = 0; i < jsonData.numMaterias; i++) {
                 var o = new Option(jsonData[i].nombre, jsonData[i].id );
                 /// jquerify the DOM object 'o' so we can use the html method
                 $(o).html(jsonData[i].nombre);
