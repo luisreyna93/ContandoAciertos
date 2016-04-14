@@ -89,7 +89,7 @@ include_once('../elements/nav.php');
                     <div class="col-sm-6 col-sm-offset-3">
                         <div class="form-group">
                             <label for="selMatricula">Matrícula:</label>
-                            <select class="form-control" id="selMatricula">
+                            <select class="form-control" id="selMatricula"onchange="getUserDesc(this.value,this.options[this.selectedIndex].innerHTML)">
                             </select>
                         </div>
                         <label>Contraseña:</label>
