@@ -17,7 +17,7 @@
                 <li><a href='menu.php'>Menú</a></li>
                 <li><a href='juego.php'>Juego</a></li>
                 <li><a href='puntaje.php'>Puntaje</a></li>
-                <li class='dropdown'>
+                <li class='dropdown' id='altas'>
                     <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Registros <span class='caret'></span></a>
                     <ul class='dropdown-menu'>
                         <li><a href='regCursosGrupos.php'>Cursos y Grupos</a></li>
@@ -25,7 +25,7 @@
                         <li><a href='regContenido.php'>Contenido</a></li>
                     </ul>
                 </li>
-                <li class='dropdown'>
+                <li class='dropdown' id='bajas'>
                     <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Bajas <span class='caret'></span></a>
                     <ul class='dropdown-menu'>
                         <li><a href='delCursosGrupos.php'>Cursos y Grupos</a></li>
@@ -33,7 +33,7 @@
                         <li><a href='delContenido.php'>Contenido</a></li>
                     </ul>
                 </li>
-                <li class='dropdown'>
+                <li class='dropdown' id='edicion'>
                     <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Edición <span class='caret'></span></a>
                     <ul class='dropdown-menu'>
                         <li><a href='edCursosGrupos.php'>Cursos y Grupos</a></li>
@@ -51,15 +51,38 @@
 </nav>
 
 <script type = 'text/javascript'>
-  var logOutButton = $('#logOutButton');
+$(document).on('ready', function() {
+    var welcomeMessage = $('#welcomeMessage');
+    var logOutButton = $('#logOutButton');
+    var menuAltas = $('#altas');
+    var menuBajas = $('#bajas');
+    var menuEdicion = $('#edicion');
 
-  logOutButton.on('click', function() {
     $.ajax({
-      type: 'POST',
-      url: '../Controllers/logoutController.php',
-      dataType: 'json',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        type: 'POST',
+        url: '../Controllers/sessionController.php',
+        dataType: 'json',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            if (jsonData.tipo != 'admin') {
+                menuAltas.addClass('hidden');
+                menuBajas.addClass('hidden');
+                menuEdicion.addClass('hidden');
+            }
+        },
+        error: function(message) {
+            window.location.href = 'logIn.php';
+        }
     });
-  });
+
+    logOutButton.on('click', function() {
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/logoutController.php',
+            dataType: 'json',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+    });
+});
 
 </script>

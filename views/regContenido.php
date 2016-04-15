@@ -126,6 +126,10 @@ $(document).on('ready', function() {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
             feedback.html('');
+
+            if (jsonData.tipo != 'admin') {
+                window.location.href = 'menu.php';
+            }
         },
         error: function(message) {
             window.location.href = 'logIn.php';
@@ -184,7 +188,7 @@ $(document).on('ready', function() {
             var parameters = {
                 'idMateria' : comboMaterias2.val()
             };
-            
+
             $.ajax({
                 type: 'POST',
                 url: '../Controllers/getTopicsForQuestionController.php',

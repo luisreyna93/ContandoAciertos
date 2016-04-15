@@ -21,7 +21,7 @@ if ($conn->connect_error) {
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        $response = array('numMaestros' => $result -> num_rows);
+        $response = array('numMaterias' => $result -> num_rows);
 
         while($row = $result->fetch_assoc()) {
             array_push($response, array('nombre' => $row['nombre'], 'clave' => $row['clave'], 'id' => $row['idMateria']));
