@@ -55,12 +55,12 @@ include_once('../elements/nav.php');
                     <div class="col-sm-6 col-sm-offset-3">
                         <div class="form-group">
                             <label for="selMateria">Materia:</label>
-                            <select class="form-control" id="selMateria">
+                            <select class="form-control" id="selMateriaGrupo" onchange="getGrupos(this.value)">
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="selGrupo">Grupo:</label>
-                            <select class="form-control" id="selGrupo">
+                            <select class="form-control" id="selGrupo" onchange="getGroupTeacher(this.value)">
                             </select>
                         </div>
                         <div class="form-group">
@@ -72,7 +72,7 @@ include_once('../elements/nav.php');
 
                     <div class="col-sm-2 col-sm-offset-5">
                         <div class="form-group">
-                            <button onclick="editarMateria()" class="btn btn-primary btn-lg" id="crearGrupo">Editar Grupo</button>
+                            <button onclick="editarGrupo()" class="btn btn-primary btn-lg" id="crearGrupo">Editar Grupo</button>
                         </div>
                     </div>
                 </div>
@@ -106,6 +106,44 @@ function onload(){
         error: function(message) {
         }
     });
+      $.ajax({
+        type: 'POST',
+        url: '../Controllers/getMateriasController.php',
+        dataType: 'json',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            for (i = 0; i < jsonData.numMaterias; i++) {
+                var o = new Option(jsonData[i].nombre, jsonData[i].id );
+                /// jquerify the DOM object 'o' so we can use the html method
+                $(o).html(jsonData[i].nombre);
+                $("#selMateriaGrupo").append(o);
+            }
+            getGrupos($("#selMateriaGrupo").val());
+        },
+        error: function(message) {
+        }
+    });
+}
+function getGrupos(value){
+    $("#selGrupo").empty();
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/getGroupsFromMaterias.php',
+        dataType: 'json',
+        data: {"idMateria": value,"forType":2},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            for (i = 0; i < jsonData.numMaestros; i++) {
+                var o = new Option(jsonData[i].grupo , jsonData[i].id );
+                /// jquerify the DOM object 'o' so we can use the html method
+                $(o).html(jsonData[i].grupo );
+                $("#selGrupo").append(o);
+            }
+            getGroupTeacher($("#selGrupo").val());
+        },
+        error: function(message) {
+        }
+    });
 }
 $(document).on('ready', function() {
     onload();
@@ -127,7 +165,43 @@ $(document).on('ready', function() {
         }
     });
 
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/getTeachersController.php',
+        dataType: 'json',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            var comboContent = '';
+            var o = new Option("Sin Asignar", -1);
+            $(o).html("Sin Asignar");
+            $("#selMaestro").append(o);
+            for (i = 0; i < jsonData.numMaestros; i++) {
+                var o = new Option(jsonData[i].nombre + ' ' + jsonData[i].apellido, jsonData[i].id );
+                /// jquerify the DOM object 'o' so we can use the html method
+                $(o).html(jsonData[i].nombre + ' ' + jsonData[i].apellido);
+                $("#selMaestro").append(o);
+                
+            }
+        },
+        error: function(message) {
+        }
+    });
+
 });
+function getGroupTeacher(value){
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/getGroupTeacher.php',
+        dataType: 'json',
+        data: {'idGrupo': value},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            $("#selMaestro").val(jsonData);
+        },
+        error: function(message) {
+        }
+    });
+}
 function getMateriaDesc(value){
     $("#nombreCurso").val(data[value]["nombre"]);
     $("#clave").val(data[value]["clave"]);
@@ -138,6 +212,22 @@ function editarCurso(){
         url: '../Controllers/editMaterias.php',
         dataType: 'json',
         data: {"idMateria":$("#selMateria").val(), "nombre": $("#nombreCurso").val(),"clave": $("#clave").val()},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            //todo: push notification of success.
+            onload();
+            $.notify("Modificación con éxito", "success");
+        },
+        error: function(message) {
+        }
+    });
+}
+function editarGrupo(){
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/editGrupo.php',
+        dataType: 'json',
+        data: {"idGrupo":$("#selGrupo").val(), "idMaestro":$("#selMaestro").val() },
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
             //todo: push notification of success.
