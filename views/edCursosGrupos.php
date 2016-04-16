@@ -231,7 +231,7 @@ function editarGrupo(){
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
             //todo: push notification of success.
-            onload();
+            //onload();
             $.notify("Modificación con éxito", "success");
         },
         error: function(message) {

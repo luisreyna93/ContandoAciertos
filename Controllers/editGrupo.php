@@ -11,8 +11,6 @@ $dbName = 'trivia';
 
 $idGrupo = $_POST['idGrupo'];
 $idMaestro = $_POST['idMaestro'];
-$nombre= mysql_real_escape_string($_POST['nombre']);
-$clave = mysql_real_escape_string($_POST['clave']);
 // Create connection
 $conn = new mysqli($dbServername, $dbUsername, $dbPassword, $dbName);
 
