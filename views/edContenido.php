@@ -26,22 +26,14 @@ include_once('../elements/nav.php');
                     <div class="col-sm-6 col-sm-offset-3">
                         <div class="form-group">
                             <label for="selMateria">Materia:</label>
-                            <select class="form-control" id="selMateria">
-                                <option>Materia 1</option>
-                                <option>Materia 2</option>
-                                <option>Materia 3</option>
-                                <option>Materia 4</option>
-                            </select>
+                            <select class="form-control" id="selMateria" onchange="getMateriaTema(this.value)">
+                        </select>
                         </div>
                     </div>
                     <div class="col-sm-6 col-sm-offset-3">
                         <div class="form-group">
                             <label for="selTema">Tema anterior:</label>
                             <select class="form-control" id="selTema">
-                                <option>Tema 1</option>
-                                <option>Tema 2</option>
-                                <option>Tema 3</option>
-                                <option>Tema 4</option>
                             </select>
                         </div>
                     </div>
@@ -53,7 +45,7 @@ include_once('../elements/nav.php');
                     </div>
                     <div class="col-sm-2 col-sm-offset-5">
                         <div class="form-group">
-                            <button class="btn btn-primary btn-lg" id="editarTema">Editar tema</button>
+                            <button class="btn btn-primary btn-lg" id="editarTema" onclick="editTema()">Editar tema</button>
                         </div>
                     </div>
                 </div>
@@ -137,6 +129,7 @@ include_once('../elements/nav.php');
 
 <script>
 $(document).on('ready', function() {
+
     $.ajax({
         type: 'POST',
         url: '../Controllers/sessionController.php',
@@ -153,7 +146,63 @@ $(document).on('ready', function() {
             window.location.href = 'logIn.php';
         }
     });
+    $("#selMateria").empty();
+
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/getMateriasController.php',
+        dataType: 'json',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            for (i = 0; i < jsonData.numMaterias; i++) {
+                var o = new Option(jsonData[i].nombre, jsonData[i].id );
+                /// jquerify the DOM object 'o' so we can use the html method
+                $(o).html(jsonData[i].nombre);
+                $("#selMateria").append(o);
+            }
+            data= jsonData;
+            $("#nombreCurso").val(jsonData[0]["nombre"]);
+            $("#clave").val(jsonData[0]["clave"]);
+            getMateriaTema($("#selMateria").val());
+        },
+        error: function(message) {
+        }
+    });
 });
+function getMateriaTema(value){
+    $("#selTema").empty();
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/getTopicsForQuestionController.php',
+        dataType: 'json',
+        data: {"idMateria": value},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            for (i = 0; i < jsonData.numTemas; i++) {
+                var o = new Option(jsonData[i].tema , jsonData[i].id );
+                /// jquerify the DOM object 'o' so we can use the html method
+                $(o).html(jsonData[i].tema );
+                $("#selTema").append(o);
+            }
+        },
+        error: function(message) {
+        }
+    });
+}
+function editTema(){
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/editTema.php',
+        dataType: 'json',
+        data: {"idTema": $('#selTema').val(), "tema": $('#tema').val()},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            $.notify("Modificación con éxito", "success");
+        },
+        error: function(message) {
+        }
+    });
+}
 </script>
 
 <?php
