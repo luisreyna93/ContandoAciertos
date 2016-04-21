@@ -242,13 +242,13 @@ $(document).on('ready', function() {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
             var comboContent = '';
-            for (i = 0; i < jsonData.numMaestros; i++) {
+            for (i = 0; i < jsonData.numMaterias; i++) {
                 var o = new Option(jsonData[i].nombre , jsonData[i].id );
                 /// jquerify the DOM object 'o' so we can use the html method
                 $(o).html(jsonData[i].nombre);
                 $("#selMateriaMaestro").append(o);
             }
-            for (i = 0; i < jsonData.numMaestros; i++) {
+            for (i = 0; i < jsonData.numMaterias; i++) {
                 var o = new Option(jsonData[i].nombre , jsonData[i].id );
                 /// jquerify the DOM object 'o' so we can use the html method
                 $(o).html(jsonData[i].nombre);
