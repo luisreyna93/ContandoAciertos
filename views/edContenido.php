@@ -56,33 +56,21 @@ include_once('../elements/nav.php');
                     <div class="col-sm-6 col-sm-offset-3">
                         <div class="form-group">
                             <label for="selMateria2">Materia:</label>
-                            <select class="form-control" id="selMateria2">
-                                <option>Materia 1</option>
-                                <option>Materia 2</option>
-                                <option>Materia 3</option>
-                                <option>Materia 4</option>
+                            <select class="form-control" id="selMateria2" onchange="getMateriaTema2(this.value)">
                             </select>
                         </div>
                     </div>
                     <div class="col-sm-6 col-sm-offset-3">
                         <div class="form-group">
                             <label for="selTema2">Tema:</label>
-                            <select class="form-control" id="selTema2">
-                                <option>Tema 1</option>
-                                <option>Tema 2</option>
-                                <option>Tema 3</option>
-                                <option>Tema 4</option>
+                            <select class="form-control" id="selTema2" onchange="getQuestions(this.value)">
                             </select>
                         </div>
                     </div>
                     <div class="col-sm-6 col-sm-offset-3">
                         <div class="form-group">
                             <label for="selPregunta">Pregunta anterior:</label>
-                            <select class="form-control" id="selPregunta">
-                                <option>Pregunta 1</option>
-                                <option>Pregunta 2</option>
-                                <option>Pregunta 3</option>
-                                <option>Pregunta 4</option>
+                            <select class="form-control" id="selPregunta" onchange="fillQuestion(this.value)">
                             </select>
                         </div>
                     </div>
@@ -118,7 +106,7 @@ include_once('../elements/nav.php');
                     </div>
                     <div class="col-sm-2 col-sm-offset-5">
                         <div class="form-group">
-                            <button class="btn btn-primary btn-lg" id="editarPregunta">Editar pregunta</button>
+                            <button class="btn btn-primary btn-lg" id="editarPregunta" onclick="editarPregunta()">Editar pregunta</button>
                         </div>
                     </div>
                 </div>
@@ -128,6 +116,7 @@ include_once('../elements/nav.php');
 </body>
 
 <script>
+var dataPreguntas;
 $(document).on('ready', function() {
 
     $.ajax({
@@ -160,10 +149,15 @@ $(document).on('ready', function() {
                 $(o).html(jsonData[i].nombre);
                 $("#selMateria").append(o);
             }
+            for (i = 0; i < jsonData.numMaterias; i++) {
+                var o = new Option(jsonData[i].nombre, jsonData[i].id );
+                /// jquerify the DOM object 'o' so we can use the html method
+                $(o).html(jsonData[i].nombre);
+                $("#selMateria2").append(o);
+            }
             data= jsonData;
-            $("#nombreCurso").val(jsonData[0]["nombre"]);
-            $("#clave").val(jsonData[0]["clave"]);
             getMateriaTema($("#selMateria").val());
+            getMateriaTema2($("#selMateria2").val());
         },
         error: function(message) {
         }
@@ -189,6 +183,66 @@ function getMateriaTema(value){
         }
     });
 }
+function getMateriaTema2(value){
+    $("#selTema").empty();
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/getTopicsForQuestionController.php',
+        dataType: 'json',
+        data: {"idMateria": value},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            for (i = 0; i < jsonData.numTemas; i++) {
+                var o = new Option(jsonData[i].tema , jsonData[i].id );
+                /// jquerify the DOM object 'o' so we can use the html method
+                $(o).html(jsonData[i].tema );
+                $("#selTema2").append(o);
+            }
+            getQuestions($("#selTema2").val());
+        },
+        error: function(message) {
+        }
+    });
+}
+
+function getQuestions(value){
+    $("#selPregunta").empty();
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/getQuestionsFromTopic.php',
+        dataType: 'json',
+        data: {"idTopic": value},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            dataPreguntas= [];
+            for (i = 0; i < jsonData.numTemas; i++) {
+                var o = new Option(jsonData[i].pregunta , jsonData[i].id );
+                /// jquerify the DOM object 'o' so we can use the html method
+                $(o).html(jsonData[i].pregunta );
+                $("#selPregunta").append(o);
+                dataPreguntas[jsonData[i].id]= {'pregunta':jsonData[i].pregunta,'opcionA':jsonData[i].opcionA,'opcionB':jsonData[i].opcionB,'opcionC':jsonData[i].opcionC,'opcionD':jsonData[i].opcionD };
+            }
+            fillQuestion($("#selPregunta").val());
+        },
+        error: function(message) {
+        }
+    });
+}
+function fillQuestion(value){
+    if(dataPreguntas.length==0){ 
+        $("#pregunta").val("");
+        $("#opcionA").val("");
+        $("#opcionB").val("");
+        $("#opcionC").val("");
+        $("#opcionD").val("");
+        return;
+    }
+    $("#pregunta").val(dataPreguntas[value].pregunta);
+    $("#opcionA").val(dataPreguntas[value].opcionA);
+    $("#opcionB").val(dataPreguntas[value].opcionB);
+    $("#opcionC").val(dataPreguntas[value].opcionC);
+    $("#opcionD").val(dataPreguntas[value].opcionD);
+}
 function editTema(){
     $.ajax({
         type: 'POST',
@@ -202,6 +256,21 @@ function editTema(){
         error: function(message) {
         }
     });
+}
+function editarPregunta(){
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/editPregunta.php',
+        dataType: 'json',
+        data: {"idPregunta": $('#selPregunta').val(), "pregunta": $("#pregunta").val(), "opcionA": $("#opcionA").val(), "opcionB": $("#opcionB").val(), "opcionC": $("#opcionC").val(), "opcionD": $("#opcionD").val()},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            $.notify("Modificación con éxito", "success");
+        },
+        error: function(message) {
+        }
+    });
+
 }
 </script>
 
