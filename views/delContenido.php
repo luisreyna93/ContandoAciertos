@@ -26,15 +26,11 @@ include_once('../elements/nav.php');
                     <div class="col-sm-6 col-sm-offset-3">
                         <div class="form-group">
                             <label for="selMateria">Materia:</label>
-                            <select class="form-control" id="selMateria">
-                                <option>Materia 1</option>
-                                <option>Materia 2</option>
-                                <option>Materia 3</option>
-                                <option>Materia 4</option>
+                            <select class="form-control" id="selMateria" onchange="getMateriaTema(this.value)">
                             </select>
                         </div>
                     </div>
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered" id="tableTema">
                         <thead>
                             <tr>
                                 <th class="col-md-9">Tema</th>
@@ -42,29 +38,11 @@ include_once('../elements/nav.php');
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Tema 1</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Tema 2</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Tema 3</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                     <div class="col-sm-2 col-sm-offset-5">
                         <div class="form-group">
-                            <button class="btn btn-primary btn-lg" id="bajaTema">Dar de baja temas</button>
+                            <button class="btn btn-primary btn-lg" id="bajaTema" onclick="deleteTema()">Dar de baja temas</button>
                         </div>
                     </div>
                 </div>
@@ -75,11 +53,7 @@ include_once('../elements/nav.php');
                     <div class="col-sm-6 col-sm-offset-3">
                         <div class="form-group">
                             <label for="selMateria2">Materia:</label>
-                            <select class="form-control" id="selMateria2">
-                                <option>Materia 1</option>
-                                <option>Materia 2</option>
-                                <option>Materia 3</option>
-                                <option>Materia 4</option>
+                            <select class="form-control" id="selMateria2" onchange="getMateriaTema2(this.value)">
                             </select>
                         </div>
                     </div>
@@ -94,7 +68,7 @@ include_once('../elements/nav.php');
                             </select>
                         </div>
                     </div>
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered" id="tablePreguntas">
                         <thead>
                             <tr>
                                 <th class="col-md-5">Pregunta</th>
@@ -106,41 +80,12 @@ include_once('../elements/nav.php');
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Pregunta 1</td>
-                                <td>Opción A</td>
-                                <td>Opción B</td>
-                                <td>Opción C</td>
-                                <td>Opción D</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Pregunta 2</td>
-                                <td>Opción A</td>
-                                <td>Opción B</td>
-                                <td>Opción C</td>
-                                <td>Opción D</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Pregunta 3</td>
-                                <td>Opción A</td>
-                                <td>Opción B</td>
-                                <td>Opción C</td>
-                                <td>Opción D</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
+                            
                         </tbody>
                     </table>
                     <div class="col-sm-2 col-sm-offset-5">
                         <div class="form-group">
-                            <button class="btn btn-primary btn-lg" id="bajaPregunta">Dar de baja preguntas</button>
+                            <button class="btn btn-primary btn-lg" id="bajaPregunta" onclick="deletePregunta()">Dar de baja preguntas</button>
                         </div>
                     </div>
                 </div>
@@ -151,6 +96,7 @@ include_once('../elements/nav.php');
 
 <script>
 $(document).on('ready', function() {
+
     $.ajax({
         type: 'POST',
         url: '../Controllers/sessionController.php',
@@ -167,7 +113,131 @@ $(document).on('ready', function() {
             window.location.href = 'logIn.php';
         }
     });
+    $("#selMateria").empty();
+    $("#selMateria2").empty();
+
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/getMateriasController.php',
+        dataType: 'json',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            for (i = 0; i < jsonData.numMaterias; i++) {
+                var o = new Option(jsonData[i].nombre, jsonData[i].id );
+                /// jquerify the DOM object 'o' so we can use the html method
+                $(o).html(jsonData[i].nombre);
+                $("#selMateria").append(o);
+            }
+            for (i = 0; i < jsonData.numMaterias; i++) {
+                var o = new Option(jsonData[i].nombre, jsonData[i].id );
+                /// jquerify the DOM object 'o' so we can use the html method
+                $(o).html(jsonData[i].nombre);
+                $("#selMateria2").append(o);
+            }
+            data= jsonData;
+            getMateriaTema($("#selMateria").val());
+            getMateriaTema2($("#selMateria2").val());
+        },
+        error: function(message) {
+        }
+    });
 });
+function getMateriaTema(value){
+    $("#tableTema tbody").empty();
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/getTopicsForQuestionController.php',
+        dataType: 'json',
+        data: {"idMateria": value},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            for (i = 0; i < jsonData.numTemas; i++) {
+                $("#tableTema").find("tbody").append( "<tr><td>"+jsonData[i].tema+"</td><td><label><input class='check' type='checkbox' value='"+jsonData[i].id+"'></label></td></tr>" );
+            }
+        },
+        error: function(message) {
+        }
+    });
+}
+function deleteTema(){
+    var selected = [];
+    $('.check:checked').each(function() {
+        selected.push($(this).val());
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/deleteTemas.php',
+        dataType: 'json',
+        data: {"temas": JSON.stringify(selected)},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            getMateriaTema($("#selMateria").val());
+             $.notify("Modificación con éxito", "success");
+        },
+        error: function(message) {
+        }
+    });
+}
+function getMateriaTema2(value){
+    $("#selTema2").empty();
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/getTopicsForQuestionController.php',
+        dataType: 'json',
+        data: {"idMateria": value},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            for (i = 0; i < jsonData.numTemas; i++) {
+                var o = new Option(jsonData[i].tema , jsonData[i].id );
+                /// jquerify the DOM object 'o' so we can use the html method
+                $(o).html(jsonData[i].tema );
+                $("#selTema2").append(o);
+            }
+           getQuestions($("#selTema2").val());
+        },
+        error: function(message) {
+        }
+    });
+}
+function getQuestions(value){
+
+    $("#tablePreguntas tbody").empty();
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/getQuestionsFromTopic.php',
+        dataType: 'json',
+        data: {"idTopic": value},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            dataPreguntas= [];
+            for (i = 0; i < jsonData.numTemas; i++) {
+                $("#tablePreguntas").find("tbody").append( '<tr><td>'+jsonData[i].pregunta+'</td><td>'+jsonData[i].opcionA+'</td><td>'+jsonData[i].opcionA+'</td><td>'+jsonData[i].opcionA+'</td><td>'+jsonData[i].opcionA+'</td><td><label><input type="checkbox" class="check2" value="'+jsonData[i].id+'"></label></td></tr>' );
+            }
+            //fillQuestion($("#selPregunta").val());
+        },
+        error: function(message) {
+        }
+    });
+}
+function deletePregunta(){
+    var selected = [];
+    $('.check2:checked').each(function() {
+        selected.push($(this).val());
+    });
+    $.ajax({
+        type: 'POST',
+        url: '../Controllers/deletePreguntas.php',
+        dataType: 'json',
+        data: {"temas": JSON.stringify(selected)},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        success: function(jsonData) {
+            getQuestions($("#selTema2").val());
+             $.notify("Modificación con éxito", "success");
+        },
+        error: function(message) {
+        }
+    });
+}
 </script>
 
 <?php
