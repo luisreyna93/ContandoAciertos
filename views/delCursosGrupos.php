@@ -50,38 +50,7 @@ include_once('../elements/header.php');
                                 <th>¿Borrar?</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <?php
-                                $conn = connect();
-
-                                $sql = "SELECT * FROM Materia ORDER BY clave;";
-
-                                $result = $conn -> query($sql);
-                                $num = $result->num_rows;
-
-                                while($num > 0) {
-                                    $row = $result -> fetch_assoc();
-                            ?>
-                                <tr>
-                                    <td>
-                                        <?php
-                                            echo $row['clave'];
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php
-                                            echo $row['nombre'];
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <label><input type="checkbox" value=""></label>
-                                    </td>
-                                </tr>
-                            <?php
-                                    $num = $num - 1;
-                                }
-                                $conn -> close();
-                            ?>
+                            <tbody id = 'tablaCursos'>
                             </tbody>
                         </table>
 
@@ -178,6 +147,9 @@ include_once('../elements/footer.php');
 
 <script type="text/javascript">
     $(document).ready(function(){
+        var tableCourses = $('#tablaCursos');
+        var comboCourses = $('#selMateria');
+
         var tabla = "<thead><tr>";
         tabla += "<th class=\"col-md-5\">Número de Grupo</th>";
         tabla += "<th class=\"col-md-5\">Nombre de Maestro</th>";
@@ -185,7 +157,7 @@ include_once('../elements/footer.php');
 
         $.ajax({
             type: 'POST',
-            url: '../Controllers/getGroupsForCourse2Controller.php',
+            url: '../Controllers/getCoursesController.php',
             dataType: 'json',
             data: {'idMateria': $("#selMateria").val()},
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
