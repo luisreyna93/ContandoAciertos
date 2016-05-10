@@ -173,6 +173,34 @@ include_once('../elements/footer.php');
             });
         });
 
+        deleteCoursesButton.on('click', function() {
+            var selected = [];
+
+            $('#tablaCursos input:checked').each(function() {
+                selected.push($(this).attr('id'));
+            });
+
+            for (i = 0; i < selected.length; i++) {
+                var parameters = {
+                    'id': selected[i],
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '../Controllers/deleteCoursesController.php',
+                    dataType: 'json',
+                    data: parameters,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    success: function(jsonData) {
+                        alert('sucess');
+                        getCourses();
+                    },
+                    error: function(message) {
+                    }
+                });
+            }
+        });
+
         deleteGroupsButton.on('click', function() {
             var selected = [];
 
