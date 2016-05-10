@@ -33,31 +33,7 @@ include_once('../elements/nav.php');
                                     <th>¿Borrar?</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Nómina 1</td>
-                                    <td>Nombre 1</td>
-                                    <td>Apellido 1</td>
-                                    <td>
-                                        <label><input type="checkbox" value=""></label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Nómina 2</td>
-                                    <td>Nombre 2</td>
-                                    <td>Apellido 2</td>
-                                    <td>
-                                        <label><input type="checkbox" value=""></label>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Nómina 3</td>
-                                    <td>Nombre 3</td>
-                                    <td>Apellido 3</td>
-                                    <td>
-                                        <label><input type="checkbox" value=""></label>
-                                    </td>
-                                </tr>
+                            <tbody id = 'teachersTable'>
                             </tbody>
                         </table>
                         <div class="col-sm-2 col-sm-offset-5">
@@ -119,6 +95,11 @@ include_once('../elements/nav.php');
 
     <script>
     $(document).on('ready', function() {
+        var teachersTable = $("#teachersTable");
+        var deleteTeachersButton = $('#bajaMaestro');
+
+        getTeachers();
+
         $.ajax({
             type: 'POST',
             url: '../Controllers/sessionController.php',
@@ -135,6 +116,60 @@ include_once('../elements/nav.php');
                 window.location.href = 'logIn.php';
             }
         });
+
+        function getTeachers() {
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/getTeachersController.php',
+                dataType: 'json',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success: function(jsonData) {
+                    var tableContent = '';
+
+                    for (i = 0; i < jsonData.numMaestros; i++) {
+                        tableContent += '<tr id = \'' + jsonData[i].id + '\'>';
+                        tableContent += '<td>' + jsonData[i].username + '</td>';
+                        tableContent += '<td>' + jsonData[i].nombre + '</td>';
+                        tableContent += '<td>' + jsonData[i].apellido + '</td>';
+                        tableContent += '<td><label><input type="checkbox" value="" id=\'' + jsonData[i].id + '\'></label></td>';
+                        tableContent += '</tr>';
+                    }
+
+                    teachersTable.html(tableContent);
+                },
+                error: function(message) {
+                }
+            });
+        }
+
+        deleteTeachersButton.on('click', function() {
+            var selected = [];
+
+            $('#teachersTable input:checked').each(function() {
+                selected.push($(this).attr('id'));
+            });
+
+            for (i = 0; i < selected.length; i++) {
+                var parameters = {
+                    'id': selected[i],
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '../Controllers/deleteTeachersController.php',
+                    dataType: 'json',
+                    data: parameters,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    success: function(jsonData) {
+                        alert('sucess');
+                        getTeachers();
+                    },
+                    error: function(message) {
+                    }
+                });
+            }
+        });
+
     });
     </script>
 

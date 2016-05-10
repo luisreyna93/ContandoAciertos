@@ -281,6 +281,7 @@ $(document).on('ready', function() {
         }
     });
 });
+
 function getTeacherDesc(value){
     idMaestro=value;
     $("#nombreMaestro").val(dataMaestro[idMaestro][0]);
@@ -304,6 +305,7 @@ function getTeacherDesc(value){
         }
     });
 }
+
 function getUserDesc(value){
     idMaestro=value;
     $("#nombreAlumno").val(dataAlumno[idMaestro][0]);
@@ -327,6 +329,7 @@ function getUserDesc(value){
         }
     });
 }
+
 function getGroupFromMateria(value){
     $("#selPosiblesMaestro").empty();
     $.ajax({
@@ -347,6 +350,7 @@ function getGroupFromMateria(value){
         }
     });
 }
+
 function getGroupFromMateriaAlumno(value){
     $("#selPosiblesAlumno").empty();
     $.ajax({
@@ -397,6 +401,7 @@ function editarMaestro(){
         }
     });
 }
+
 function editarAlumno(){
     var groups = [];
 
