@@ -154,7 +154,6 @@ $(document).on('ready', function() {
             comboMaterias2.trigger('change');
         },
         error: function(message) {
-            alert(message);
         }
     });
 

@@ -205,7 +205,6 @@ $(document).on('ready', function() {
             courses = jsonData;
         },
         error: function(message) {
-            alert(message);
         }
     });
 
