@@ -86,6 +86,9 @@ $(document).on('ready', function() {
     var grupoInput = $('#nombreGrupo');
     var feedback = $('#feedback');
 
+    getCourses();
+    getTeachers();
+
     $.ajax({
         type: 'POST',
         url: '../Controllers/sessionController.php',
@@ -103,43 +106,47 @@ $(document).on('ready', function() {
         }
     });
 
-    $.ajax({
-        type: 'POST',
-        url: '../Controllers/contentController.php',
-        dataType: 'json',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        success: function(jsonData) {
-            var comboContent = ''
+    function getCourses() {
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/contentController.php',
+            dataType: 'json',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+                var comboContent = ''
 
-            for (i = 0; i < jsonData.numMaterias; i++) {
-                comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].materia + '</option>';
-            }
-
-            comboMaterias.html(comboContent);
-        },
-        error: function(message) {
-        }
-    });
-
-    $.ajax({
-        type: 'POST',
-        url: '../Controllers/getTeachersController.php',
-        dataType: 'json',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        success: function(jsonData) {
-            var comboContent = '<option value=-1>--------</option>'
-
-            for (i = 0; i < jsonData.numMaestros; i++) {
-                if (jsonData[i].id != -1) {
-                    comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].nombre + ' ' + jsonData[i].apellido +'</option>';
+                for (i = 0; i < jsonData.numMaterias; i++) {
+                    comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].materia + '</option>';
                 }
-            }
 
-            comboMaestros.html(comboContent);
-        },
-        error: function(message) {
-        }
-    });
+                comboMaterias.html(comboContent);
+            },
+            error: function(message) {
+            }
+        });
+    }
+
+    function getTeachers() {
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/getTeachersController.php',
+            dataType: 'json',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+                var comboContent = '<option value=-1>--------</option>'
+
+                for (i = 0; i < jsonData.numMaestros; i++) {
+                    if (jsonData[i].id != -1) {
+                        comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].nombre + ' ' + jsonData[i].apellido +'</option>';
+                    }
+                }
+
+                comboMaestros.html(comboContent);
+            },
+            error: function(message) {
+            }
+        });
+    }
 
     crearCursoButton.on('click', function() {
         var parameters = {
@@ -156,6 +163,7 @@ $(document).on('ready', function() {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
                     feedback.html('Curso Registrado');
+                    getCourses();
                 },
                 error: function(message) {
                     feedback.html('Curso No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
@@ -186,6 +194,10 @@ $(document).on('ready', function() {
                     } else {
                         feedback.html('Grupo Registrado');
                     }
+
+                    getCourses();
+                    getTeachers();
+                    grupoInput.val("");
                 },
                 error: function(message) {
                     feedback.html('Grupo No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
