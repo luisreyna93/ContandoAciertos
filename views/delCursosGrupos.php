@@ -92,8 +92,6 @@ include_once('../elements/header.php');
 						</div>
 					</div>
 				</div>
-                <div id = 'feedback' class = 'text-center'>
-                </div>
 			</div>
 		</div>
     </body>
@@ -192,10 +190,11 @@ include_once('../elements/footer.php');
                     data: parameters,
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     success: function(jsonData) {
-                        alert('sucess');
+                        $.notify('Curso Borrado', 'success');
                         getCourses();
                     },
                     error: function(message) {
+                        $.notify('Curso No Borrado', 'error');
                     }
                 });
             }
@@ -220,10 +219,11 @@ include_once('../elements/footer.php');
                     data: parameters,
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     success: function(jsonData) {
-                        alert('sucess');
+                        $.notify('Grupo Borrado', 'success');
                         comboCourses.trigger('change');
                     },
                     error: function(message) {
+                        $.notify('Grupo No Borrado', 'error');
                     }
                 });
             }
