@@ -167,6 +167,8 @@ $(document).on('ready', function() {
     var moveToPossibleButton2 = $("#moverGruposIzquierdaAlumno");
     var feedback = $('#feedback');
 
+    getCourses();
+
     $.ajax({
         type: 'POST',
         url: '../Controllers/sessionController.php',
@@ -184,29 +186,31 @@ $(document).on('ready', function() {
         }
     });
 
-    $.ajax({
-        type: 'POST',
-        url: '../Controllers/contentController.php',
-        dataType: 'json',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        success: function(jsonData) {
-            var comboContent = ''
+    function getCourses() {
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/contentController.php',
+            dataType: 'json',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+                var comboContent = ''
 
-            for (i = 0; i < jsonData.numMaterias; i++) {
-                comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].materia + '</option>';
+                for (i = 0; i < jsonData.numMaterias; i++) {
+                    comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].materia + '</option>';
+                }
+
+                comboMaterias.html(comboContent);
+                comboMaterias2.html(comboContent);
+
+                comboMaterias.trigger('change');
+                comboMaterias2.trigger('change');
+
+                courses = jsonData;
+            },
+            error: function(message) {
             }
-
-            comboMaterias.html(comboContent);
-            comboMaterias2.html(comboContent);
-
-            comboMaterias.trigger('change');
-            comboMaterias2.trigger('change');
-
-            courses = jsonData;
-        },
-        error: function(message) {
-        }
-    });
+        });
+    }
 
     comboMaterias.change(function() {
         if (comboMaterias.html() != '') {
@@ -333,6 +337,7 @@ $(document).on('ready', function() {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
                     feedback.html('Maestro Registrado');
+                    getCourses();
                 },
                 error: function(message) {
                     feedback.html('Maestro No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
@@ -371,6 +376,7 @@ $(document).on('ready', function() {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
                     feedback.html('Alumno Registrado');
+                    getCourses();
                 },
                 error: function(message) {
                     feedback.html('Alumno No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
