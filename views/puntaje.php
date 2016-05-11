@@ -15,7 +15,6 @@ include_once('../elements/nav.php');
 
 <body>
 </br></br></br>
-<link rel = 'import' href = '../elements/comboBox.html'>
 <div class = 'container'>
     <center><h1> Tabla de Puntajes </h1></center>
 </br></br></br>

@@ -17,7 +17,7 @@ if ($conn->connect_error) {
     header('HTTP/1.1 500 Bad connection to Database');
     die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 } else {
-    $sql = "SELECT A.nombre AS 'nombreAlumno', A.apellido AS 'apellidoAlumno', G.numero, P.nombre, P.apellido, AJT.puntaje FROM Usuario A, Usuario P, Grupo G, AlumnoJuegaTema AJT, AlumnoEnGrupo AEG WHERE A.idUsuario = AJT.idAlumno AND AJT.idTema = '$idTema' AND A.idUsuario = AEG.idAlumno AND AEG.idGrupo = G.idGrupo AND G.idMateria = '$idMateria' AND G.idMaestro = P.idUsuario";
+    $sql = "SELECT A.nombre AS 'nombreAlumno', A.apellido AS 'apellidoAlumno', G.numero, P.nombre, P.apellido, AJT.puntaje FROM Usuario A, Usuario P, Grupo G, AlumnoJuegaTema AJT, AlumnoEnGrupo AEG WHERE A.idUsuario = AJT.idAlumno AND AJT.idTema = '$idTema' AND A.idUsuario = AEG.idAlumno AND AEG.idGrupo = G.idGrupo AND G.idMateria = '$idMateria' AND G.idMaestro = P.idUsuario ORDER BY AJT.puntaje DESC";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
