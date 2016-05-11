@@ -85,8 +85,6 @@ include_once('../elements/nav.php');
             dataType: 'json',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             success: function(jsonData) {
-                // feedback.html('');
-
                 if (jsonData.tipo != 'admin') {
                     window.location.href = 'menu.php';
                 }
@@ -165,9 +163,11 @@ include_once('../elements/nav.php');
                     data: parameters,
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     success: function(jsonData) {
+                        $.notify('Maestro Borrado', 'success');
                         getTeachers();
                     },
                     error: function(message) {
+                        $.notify('Maestro No Borrado', 'error');
                     }
                 });
             }
@@ -192,10 +192,11 @@ include_once('../elements/nav.php');
                     data: parameters,
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                     success: function(jsonData) {
-                        alert('sucess');
+                        $.notify('Alumno Borrado', 'success');
                         getStudents();
                     },
                     error: function(message) {
+                        $.notify('Alumno No Borrado', 'error');
                     }
                 });
             }
