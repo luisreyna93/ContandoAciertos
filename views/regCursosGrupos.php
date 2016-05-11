@@ -70,7 +70,6 @@ include_once('../elements/nav.php');
                     </div>
                 </div>
             </div>
-            <div id = 'feedback' class = 'text-center'></div>
         </div>
     </div>
 </body>
@@ -84,7 +83,6 @@ $(document).on('ready', function() {
     var comboMaterias = $('#selMateria');
     var comboMaestros = $('#selMaestro');
     var grupoInput = $('#nombreGrupo');
-    var feedback = $('#feedback');
 
     getCourses();
     getTeachers();
@@ -95,8 +93,6 @@ $(document).on('ready', function() {
         dataType: 'json',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
-            feedback.html('');
-
             if (jsonData.tipo != 'admin') {
                 window.location.href = 'menu.php';
             }
@@ -162,15 +158,15 @@ $(document).on('ready', function() {
                 data: parameters,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
-                    feedback.html('Curso Registrado');
+                    $.notify('Curso Registrado', 'success');
                     getCourses();
                 },
                 error: function(message) {
-                    feedback.html('Curso No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                    $.notify('Curso No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos', 'error');
                 }
             });
         }  else {
-            feedback.html('Los campos \'Curso\' y \'Clave\' son obligatorios');
+            $.notify('Los campos \'Curso\' y \'Clave\' son obligatorios', 'alert');
         }
     });
 
@@ -190,9 +186,9 @@ $(document).on('ready', function() {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
                     if (comboMaestros.val() == -1) {
-                        feedback.html('Grupo Registrado<br>Recuerda registrar un maestro para este grupo');
+                        $.notify('Grupo Registrado\nRecuerda registrar un maestro para este grupo', 'success');
                     } else {
-                        feedback.html('Grupo Registrado');
+                        $.notify('Grupo Registrado', 'success');
                     }
 
                     getCourses();
@@ -200,11 +196,11 @@ $(document).on('ready', function() {
                     grupoInput.val("");
                 },
                 error: function(message) {
-                    feedback.html('Grupo No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                    $.notify('Grupo No Registrado\nVerifique la existencia previa o la conexión a la Base de Datos', 'error');
                 }
             });
         } else {
-            feedback.html('El campo \'Grupo\' es obligatorio');
+            $.notify('El campo \'Grupo\' es obligatorio', 'alert');
         }
     });
 

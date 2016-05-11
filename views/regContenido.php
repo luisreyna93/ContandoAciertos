@@ -98,8 +98,6 @@ include_once('../elements/nav.php');
                     </div>
                 </div>
             </div>
-            <div id = 'feedback' class = 'text-center'>
-            </div>
         </div>
     </div>
 </body>
@@ -117,7 +115,6 @@ $(document).on('ready', function() {
     var opcionBInput = $('#opcionB');
     var opcionCInput = $('#opcionC');
     var opcionDInput = $('#opcionD');
-    var feedback = $('#feedback');
 
     getCourses();
 
@@ -127,8 +124,6 @@ $(document).on('ready', function() {
         dataType: 'json',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
-            feedback.html('');
-
             if (jsonData.tipo != 'admin') {
                 window.location.href = 'menu.php';
             }
@@ -175,15 +170,15 @@ $(document).on('ready', function() {
                 data: parameters,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
-                    feedback.html('Tema Registrado');
+                    $.notify("Tema Registrado", "success");
                     getCourses();
                 },
                 error: function(message) {
-                    feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                    $.notify("Tema No Registrado\nVerifique la existencia previa o la conexión a la Base de Datos", "error");
                 }
             });
         }  else {
-            feedback.html('El campo \'Tema\' es obligatorio');
+            $.notify('El campo \'Tema\' es obligatorio', 'alert');
         }
     });
 
@@ -211,7 +206,7 @@ $(document).on('ready', function() {
                     comboTemas.html(comboContent);
                 },
                 error: function(message) {
-                    feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                    $.notify('Tema No Registrado\nVerifique la existencia previa o la conexión a la Base de Datos', 'error');
                 }
             });
         }
@@ -235,15 +230,15 @@ $(document).on('ready', function() {
                 data: parameters,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
-                    feedback.html('Pregunta Registrada');
+                    $.notify("Pregunta Registrada", "success");
                     getCourses();
                 },
                 error: function(message) {
-                    feedback.html('Pregunta No Registrada<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                    $.notify("Pregunta No Registrada\nVerifique la existencia previa o la conexión a la Base de Datos", "error");
                 }
             });
         } else {
-            feedback.html('Los campos \'Pregunta\', \'Opción A\' y  \'Opción B\' son obligatorios');
+            $.notify('Los campos \'Pregunta\', \'Opción A\' y  \'Opción B\' son obligatorios', 'alert');
         }
     });
 });
