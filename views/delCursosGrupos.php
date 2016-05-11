@@ -50,38 +50,7 @@ include_once('../elements/header.php');
                                 <th>¿Borrar?</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <?php
-                                $conn = connect();
-
-                                $sql = "SELECT * FROM Materia ORDER BY clave;";
-
-                                $result = $conn -> query($sql);
-                                $num = $result->num_rows;
-
-                                while($num > 0) {
-                                    $row = $result -> fetch_assoc();
-                            ?>
-                                <tr>
-                                    <td>
-                                        <?php
-                                            echo $row['clave'];
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <?php
-                                            echo $row['nombre'];
-                                        ?>
-                                    </td>
-                                    <td>
-                                        <label><input type="checkbox" value=""></label>
-                                    </td>
-                                </tr>
-                            <?php
-                                    $num = $num - 1;
-                                }
-                                $conn -> close();
-                            ?>
+                            <tbody id = 'tablaCursos'>
                             </tbody>
                         </table>
 
@@ -100,28 +69,6 @@ include_once('../elements/header.php');
                             <div class="form-group">
 								<label for="selMateria">Materia:</label>
 								<select class="form-control" id="selMateria">
-                                    <?php
-                                        $conn = connect();
-
-                                        $sql = "SELECT * FROM Materia ORDER BY nombre;";
-
-                                        $result = $conn -> query($sql);
-                                        $num = $result->num_rows;
-
-                                        while($num > 0) {
-                                            $row = $result -> fetch_assoc();
-                                    ?>
-                                    <option value = <?php echo $row['idMateria']?>>
-                                        <?php
-                                            echo $row['nombre'];
-                                        ?>
-                                    </option>
-                                    <?php
-                                            $num = $num - 1;
-                                        }
-
-                                        $conn -> close();
-                                    ?>
 							  	</select>
 						    </div>
 						</div>
@@ -134,28 +81,7 @@ include_once('../elements/header.php');
                                 <th>¿Borrar?</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td>Grupo 1</td>
-                                <td>Maestro 1</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Grupo 2</td>
-                                <td>Maestro 2</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Grupo 3</td>
-                                <td>Maestro 3</td>
-                                <td>
-                                    <label><input type="checkbox" value=""></label>
-                                </td>
-                            </tr>
+                            <tbody id = 'tablaGrupos'>
                             </tbody>
                         </table>
 
@@ -178,64 +104,129 @@ include_once('../elements/footer.php');
 
 <script type="text/javascript">
     $(document).ready(function(){
-        var tabla = "<thead><tr>";
-        tabla += "<th class=\"col-md-5\">Número de Grupo</th>";
-        tabla += "<th class=\"col-md-5\">Nombre de Maestro</th>";
-        tabla += "<th>¿Borrar?</th></tr></thead>";
+        var tableCourses = $('#tablaCursos');
+        var tableGroups = $('#tablaGrupos');
+        var comboCourses = $('#selMateria');
+        var deleteCoursesButton = $('#bajaCurso');
+        var deleteGroupsButton = $('#bajaGrupo');
 
-        $.ajax({
-            type: 'POST',
-            url: '../Controllers/getGroupsForCourse2Controller.php',
-            dataType: 'json',
-            data: {'idMateria': $("#selMateria").val()},
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            success: function(jsonData) {
-                tabla += "<tbody>";
-                for(var i = 0; i < jsonData.length; i++) {
-                    tabla += "<tr><td>" + jsonData[i].grupo + "</td>";
-                    tabla += "<td>" + jsonData[i].nombreMaestro + "</td>";
-                    tabla += "<td><label><input type=\"checkbox\" value=\"\"></label></td></tr>";
+        getCourses();
+
+        function getCourses() {
+            $.ajax({
+                type: 'POST',
+                url: '../Controllers/getCoursesController.php',
+                dataType: 'json',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                success: function(jsonData) {
+                    var tableContent = '';
+                    var comboContent = '';
+
+                    for (i = 0; i < jsonData.numCursos; i++) {
+                        tableContent += '<tr id = \'' + jsonData[i].id + '\'>';
+                        tableContent += '<td>' + jsonData[i].clave + '</td>';
+                        tableContent += '<td>' + jsonData[i].nombre + '</td>';
+                        tableContent += '<td><label><input type="checkbox" value="" id=\'' + jsonData[i].id + '\'></label></td>';
+                        tableContent += '</tr>';
+
+                        comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].nombre + '</option>';
+                    }
+
+                    tableCourses.html(tableContent);
+                    comboCourses.html(comboContent);
+
+                    if (comboContent != '') {
+                        comboCourses.trigger('change');
+                    }
+                },
+                error: function(message) {
                 }
-                tabla += "</tbody>";
+            });
+        }
 
-                $("#tablaBajasGrupos").html(tabla);
-            },
-            error: function(message) {
-                console.log(message.statusText);
-                $("#tablaBajasGrupos").html(tabla);
+        comboCourses.change(function(){
+            var parameters = {
+                'idMateria': $(this).val(),
             }
-        });
-
-        $("#selMateria").change(function(){
-            $("#tablaBajasGrupos").html("");
-
-            var tabla = "<thead><tr>";
-            tabla += "<th class=\"col-md-5\">Número de Grupo</th>";
-            tabla += "<th class=\"col-md-5\">Nombre de Maestro</th>";
-            tabla += "<th>¿Borrar?</th></tr></thead>";
 
             $.ajax({
                 type: 'POST',
                 url: '../Controllers/getGroupsForCourse2Controller.php',
                 dataType: 'json',
-                data: {'idMateria': $(this).val()},
+                data: parameters,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
-                    tabla += "<tbody>";
-                    for(var i = 0; i < jsonData.length; i++) {
-                       tabla += "<tr><td>" + jsonData[i].grupo + "</td>";
-                       tabla += "<td>" + jsonData[i].nombreMaestro + "</td>";
-                       tabla += "<td><label><input type=\"checkbox\" value=\"\"></label></td></tr>";
-                    }
-                    tabla += "</tbody>";
+                    tableContent = '';
 
-                    $("#tablaBajasGrupos").html(tabla);
+                    for(var i = 0; i < jsonData.length; i++) {
+                        tableContent += '<tr id = \'' + jsonData[i].id + '\'>';
+                        tableContent += '<td>' + jsonData[i].grupo + '</td>';
+                        tableContent += '<td>' + jsonData[i].nombreMaestro + '</td>';
+                        tableContent += '<td><label><input type="checkbox" value="" id=\'' + jsonData[i].id + '\'></label></td>';
+                        tableContent += '</tr>';
+                    }
+
+                    tableGroups.html(tableContent);
                 },
                 error: function(message) {
-                    console.log(message.statusText);
-                    $("#tablaBajasGrupos").html(tabla);
                 }
             });
+        });
+
+        deleteCoursesButton.on('click', function() {
+            var selected = [];
+
+            $('#tablaCursos input:checked').each(function() {
+                selected.push($(this).attr('id'));
+            });
+
+            for (i = 0; i < selected.length; i++) {
+                var parameters = {
+                    'id': selected[i],
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '../Controllers/deleteCoursesController.php',
+                    dataType: 'json',
+                    data: parameters,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    success: function(jsonData) {
+                        alert('sucess');
+                        getCourses();
+                    },
+                    error: function(message) {
+                    }
+                });
+            }
+        });
+
+        deleteGroupsButton.on('click', function() {
+            var selected = [];
+
+            $('#tablaGrupos input:checked').each(function() {
+                selected.push($(this).attr('id'));
+            });
+
+            for (i = 0; i < selected.length; i++) {
+                var parameters = {
+                    'id': selected[i],
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '../Controllers/deleteGroupsController.php',
+                    dataType: 'json',
+                    data: parameters,
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    success: function(jsonData) {
+                        alert('sucess');
+                        comboCourses.trigger('change');
+                    },
+                    error: function(message) {
+                    }
+                });
+            }
         });
     });
 </script>

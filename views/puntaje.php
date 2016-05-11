@@ -167,6 +167,8 @@ $(document).on('ready', function() {
                 error: function(message) {
                 }
             });
+        } else {
+            table.html("");
         }
     });
 

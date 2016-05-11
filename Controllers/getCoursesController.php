@@ -14,14 +14,14 @@ if ($conn->connect_error) {
     header('HTTP/1.1 500 Bad connection to Database');
     die(json_encode(array('message' => 'ERROR', 'code' => 1337)));
 } else {
-    $sql = "SELECT idUsuario, nombre, apellido, username FROM Usuario WHERE idUsuario !=-1 and tipo = 'maestro'";
+    $sql = "SELECT idMateria, nombre, clave FROM Materia";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
-        $response = array('numMaestros' => $result -> num_rows);
+        $response = array('numCursos' => $result -> num_rows);
 
         while($row = $result->fetch_assoc()) {
-            array_push($response, array('nombre' => $row['nombre'], 'apellido' => $row['apellido'], 'id' => $row['idUsuario'], 'username' => $row['username']));
+            array_push($response, array('nombre' => $row['nombre'], 'clave' => $row['clave'], 'id' => $row['idMateria']));
         }
 
         echo json_encode($response);
