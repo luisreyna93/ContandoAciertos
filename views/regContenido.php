@@ -119,6 +119,8 @@ $(document).on('ready', function() {
     var opcionDInput = $('#opcionD');
     var feedback = $('#feedback');
 
+    getCourses();
+
     $.ajax({
         type: 'POST',
         url: '../Controllers/sessionController.php',
@@ -136,26 +138,28 @@ $(document).on('ready', function() {
         }
     });
 
-    $.ajax({
-        type: 'POST',
-        url: '../Controllers/contentController.php',
-        dataType: 'json',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        success: function(jsonData) {
-            var comboContent = ''
+    function getCourses() {
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/contentController.php',
+            dataType: 'json',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+                var comboContent = ''
 
-            for (i = 0; i < jsonData.numMaterias; i++) {
-                comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].materia + '</option>';
+                for (i = 0; i < jsonData.numMaterias; i++) {
+                    comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].materia + '</option>';
+                }
+
+                comboMaterias.html(comboContent);
+                comboMaterias2.html(comboContent);
+
+                comboMaterias2.trigger('change');
+            },
+            error: function(message) {
             }
-
-            comboMaterias.html(comboContent);
-            comboMaterias2.html(comboContent);
-
-            comboMaterias2.trigger('change');
-        },
-        error: function(message) {
-        }
-    });
+        });
+    }
 
     crearTemaButton.on('click', function() {
         var parameters = {
@@ -172,6 +176,7 @@ $(document).on('ready', function() {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
                     feedback.html('Tema Registrado');
+                    getCourses();
                 },
                 error: function(message) {
                     feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
@@ -231,6 +236,7 @@ $(document).on('ready', function() {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
                     feedback.html('Pregunta Registrada');
+                    getCourses();
                 },
                 error: function(message) {
                     feedback.html('Pregunta No Registrada<br>Verifique la existencia previa o la conexión a la Base de Datos');
