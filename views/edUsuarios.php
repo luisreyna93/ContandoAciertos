@@ -156,11 +156,12 @@ var moveToActualButton = $("#moverGruposDerecha");
 var moveToPossibleButton = $("#moverGruposIzquierda");
 var moveToActualButton2 = $("#moverGruposDerecha2");
 var moveToPossibleButton2 = $("#moverGruposIzquierda2");
+
 moveToActualButton.on('click', function() {
     var selItem = posiblesGruposMaestro.prop('selectedIndex');
 
     if (selItem == -1) {
-        feedback.html('Elige uno o más grupos de la lista de posibles grupos.<br>Si está vacía, no hay grupos sin maestro asignado para la materia seleccionada.');
+        $.notify('Elige uno o más grupos de la lista de posibles grupos.\nSi está vacía, no hay grupos sin maestro asignado para la materia seleccionada.', 'alert');
     } else {
         $('#selPosiblesMaestro option:selected').remove().appendTo('#selActualesMaestro').removeAttr('selected');
     }
@@ -170,7 +171,7 @@ moveToPossibleButton.on('click', function() {
     var selItem = actualesGruposMaestro.prop('selectedIndex');
 
     if (selItem == -1) {
-        feedback.html('No hay grupos actuales.');
+        $.notify('No hay grupos actuales.', 'alert');
     } else {
         $('#selActualesMaestro option:selected').remove().appendTo('#selPosiblesMaestro').removeAttr('selected');
     }
@@ -180,7 +181,7 @@ moveToActualButton2.on('click', function() {
     var selItem = posiblesGruposAlumno.prop('selectedIndex');
 
     if (selItem == -1) {
-        feedback.html('Elige un grupo de la lista de posibles grupos.<br>Si está vacía, no hay grupos sin maestro asignado para la materia seleccionada.');
+        $.notify('Elige un grupo de la lista de posibles grupos.\nSi está vacía, no hay grupos sin maestro asignado para la materia seleccionada.', 'alert');
     } else {
         $('#selPosiblesAlumno option:selected').remove().appendTo('#selActualesAlumno').removeAttr('selected');
     }
@@ -190,7 +191,7 @@ moveToPossibleButton2.on('click', function() {
     var selItem = actualesGruposAlumno.prop('selectedIndex');
 
     if (selItem == -1) {
-        feedback.html('No hay grupos actuales.');
+        $.notify('No hay grupos actuales.', 'alert');
     } else {
         $('#selActualesAlumno option:selected').remove().appendTo('#selPosiblesAlumno').removeAttr('selected');
     }
@@ -205,8 +206,6 @@ $(document).on('ready', function() {
         dataType: 'json',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
-            // feedback.html('');
-
             if (jsonData.tipo != 'admin') {
                 window.location.href = 'menu.php';
             }
@@ -396,8 +395,10 @@ function editarMaestro(){
         data: parameters,
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
+            $.notify('Maestro Actualizado', 'success');
         },
         error: function(message) {
+            $.notify('Maestro No Actualizado', 'error');
         }
     });
 }
@@ -427,8 +428,10 @@ function editarAlumno(){
         data: parameters,
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
+            $.notify('Alumno Actualizado', 'success');
         },
         error: function(message) {
+            $.notify('Alumno No Actualizado', 'error');
         }
     });
 }

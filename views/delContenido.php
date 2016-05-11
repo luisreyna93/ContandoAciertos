@@ -80,7 +80,7 @@ include_once('../elements/nav.php');
                             </tr>
                         </thead>
                         <tbody>
-                            
+
                         </tbody>
                     </table>
                     <div class="col-sm-2 col-sm-offset-5">
@@ -103,8 +103,6 @@ $(document).on('ready', function() {
         dataType: 'json',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
-            // feedback.html('');
-
             if (jsonData.tipo != 'admin') {
                 window.location.href = 'menu.php';
             }
@@ -124,13 +122,13 @@ $(document).on('ready', function() {
         success: function(jsonData) {
             for (i = 0; i < jsonData.numMaterias; i++) {
                 var o = new Option(jsonData[i].nombre, jsonData[i].id );
-                /// jquerify the DOM object 'o' so we can use the html method
+
                 $(o).html(jsonData[i].nombre);
                 $("#selMateria").append(o);
             }
             for (i = 0; i < jsonData.numMaterias; i++) {
                 var o = new Option(jsonData[i].nombre, jsonData[i].id );
-                /// jquerify the DOM object 'o' so we can use the html method
+
                 $(o).html(jsonData[i].nombre);
                 $("#selMateria2").append(o);
             }
@@ -172,9 +170,10 @@ function deleteTema(){
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
             getMateriaTema($("#selMateria").val());
-             $.notify("Modificación con éxito", "success");
+            $.notify("Tema Borrado", "success");
         },
         error: function(message) {
+            $.notify("Tema No Borrado", "error");
         }
     });
 }
@@ -189,7 +188,7 @@ function getMateriaTema2(value){
         success: function(jsonData) {
             for (i = 0; i < jsonData.numTemas; i++) {
                 var o = new Option(jsonData[i].tema , jsonData[i].id );
-                /// jquerify the DOM object 'o' so we can use the html method
+
                 $(o).html(jsonData[i].tema );
                 $("#selTema2").append(o);
             }
@@ -213,7 +212,7 @@ function getQuestions(value){
             for (i = 0; i < jsonData.numTemas; i++) {
                 $("#tablePreguntas").find("tbody").append( '<tr><td>'+jsonData[i].pregunta+'</td><td>'+jsonData[i].opcionA+'</td><td>'+jsonData[i].opcionA+'</td><td>'+jsonData[i].opcionA+'</td><td>'+jsonData[i].opcionA+'</td><td><label><input type="checkbox" class="check2" value="'+jsonData[i].id+'"></label></td></tr>' );
             }
-            //fillQuestion($("#selPregunta").val());
+
         },
         error: function(message) {
         }
@@ -232,9 +231,10 @@ function deletePregunta(){
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
             getQuestions($("#selTema2").val());
-             $.notify("Modificación con éxito", "success");
+            $.notify("Pregunta Borrada", "success");
         },
         error: function(message) {
+            $.notify("Pregunta No Borrada", "error");
         }
     });
 }

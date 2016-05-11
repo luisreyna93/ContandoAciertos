@@ -138,7 +138,6 @@ include_once('../elements/nav.php');
                     </div>
                 </div>
             </div>
-            <div id = 'feedback' class = 'text-center'></div>
         </div>
     </div>
 </body>
@@ -165,7 +164,8 @@ $(document).on('ready', function() {
     var moveToPossibleButton = $("#moverGruposIzquierdaMaestro");
     var moveToActualButton2 = $("#moverGruposDerechaAlumno");
     var moveToPossibleButton2 = $("#moverGruposIzquierdaAlumno");
-    var feedback = $('#feedback');
+
+    getCourses();
 
     $.ajax({
         type: 'POST',
@@ -173,8 +173,6 @@ $(document).on('ready', function() {
         dataType: 'json',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
-            feedback.html('');
-
             if (jsonData.tipo != 'admin') {
                 window.location.href = 'menu.php';
             }
@@ -184,29 +182,31 @@ $(document).on('ready', function() {
         }
     });
 
-    $.ajax({
-        type: 'POST',
-        url: '../Controllers/contentController.php',
-        dataType: 'json',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        success: function(jsonData) {
-            var comboContent = ''
+    function getCourses() {
+        $.ajax({
+            type: 'POST',
+            url: '../Controllers/contentController.php',
+            dataType: 'json',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            success: function(jsonData) {
+                var comboContent = ''
 
-            for (i = 0; i < jsonData.numMaterias; i++) {
-                comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].materia + '</option>';
+                for (i = 0; i < jsonData.numMaterias; i++) {
+                    comboContent += '<option value=' + jsonData[i].id + '>' + jsonData[i].materia + '</option>';
+                }
+
+                comboMaterias.html(comboContent);
+                comboMaterias2.html(comboContent);
+
+                comboMaterias.trigger('change');
+                comboMaterias2.trigger('change');
+
+                courses = jsonData;
+            },
+            error: function(message) {
             }
-
-            comboMaterias.html(comboContent);
-            comboMaterias2.html(comboContent);
-
-            comboMaterias.trigger('change');
-            comboMaterias2.trigger('change');
-
-            courses = jsonData;
-        },
-        error: function(message) {
-        }
-    });
+        });
+    }
 
     comboMaterias.change(function() {
         if (comboMaterias.html() != '') {
@@ -231,7 +231,7 @@ $(document).on('ready', function() {
                     posiblesGruposMaestro.html(comboContent);
                 },
                 error: function(message) {
-                    feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                    $.notify('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos', 'error');
                 }
             });
         }
@@ -260,7 +260,7 @@ $(document).on('ready', function() {
                     posiblesGruposAlumno.html(comboContent);
                 },
                 error: function(message) {
-                    feedback.html('Tema No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                    $.notify('Tema No Registrado\nVerifique la existencia previa o la conexión a la Base de Datos', 'error');
                 }
             });
         }
@@ -270,7 +270,7 @@ $(document).on('ready', function() {
         var selItem = posiblesGruposMaestro.prop('selectedIndex');
 
         if (selItem == -1) {
-            feedback.html('Elige uno o más grupos de la lista de posibles grupos.<br>Si está vacía, no hay grupos sin maestro asignado para la materia seleccionada.');
+            $.notify('Elige uno o más grupos de la lista de posibles grupos.\nSi está vacía, no hay grupos sin maestro asignado para la materia seleccionada.', 'alert');
         } else {
             $('#selPosiblesMaestro option:selected').remove().appendTo('#selActualesMaestro').removeAttr('selected');
         }
@@ -280,7 +280,7 @@ $(document).on('ready', function() {
         var selItem = actualesGruposMaestro.prop('selectedIndex');
 
         if (selItem == -1) {
-            feedback.html('No hay grupos actuales.');
+            $.notify('No hay grupos actuales.', 'alert');
         } else {
             $('#selActualesMaestro option:selected').remove().appendTo('#selPosiblesMaestro').removeAttr('selected');
         }
@@ -290,7 +290,7 @@ $(document).on('ready', function() {
         var selItem = posiblesGruposAlumno.prop('selectedIndex');
 
         if (selItem == -1) {
-            feedback.html('Elige un grupo de la lista de posibles grupos.<br>Si está vacía, no hay grupos sin maestro asignado para la materia seleccionada.');
+            $.notify('Elige un grupo de la lista de posibles grupos.\nSi está vacía, no hay grupos sin maestro asignado para la materia seleccionada.', 'alert');
         } else {
             $('#selPosiblesAlumno option:selected').remove().appendTo('#selActualesAlumno').removeAttr('selected');
         }
@@ -300,7 +300,7 @@ $(document).on('ready', function() {
         var selItem = actualesGruposAlumno.prop('selectedIndex');
 
         if (selItem == -1) {
-            feedback.html('No hay grupos actuales.');
+            $.notify('No hay grupos actuales.', 'alert');
         } else {
             $('#selActualesAlumno option:selected').remove().appendTo('#selPosiblesAlumno').removeAttr('selected');
         }
@@ -332,14 +332,15 @@ $(document).on('ready', function() {
                 data: parameters,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
-                    feedback.html('Maestro Registrado');
+                    $.notify('Maestro Registrado', 'success');
+                    getCourses();
                 },
                 error: function(message) {
-                    feedback.html('Maestro No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                    $.notify('Maestro No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos', 'error');
                 }
             });
         } else {
-            feedback.html('Los campos \'Nómina\', \'Contraseña\', \'Nombre\' y \'Apellidos\' son obligatorios.')
+            $.notify('Los campos \'Nómina\', \'Contraseña\', \'Nombre\' y \'Apellidos\' son obligatorios.', 'alert');
         }
 
     });
@@ -370,14 +371,15 @@ $(document).on('ready', function() {
                 data: parameters,
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 success: function(jsonData) {
-                    feedback.html('Alumno Registrado');
+                    $.notify('Alumno Registrado', 'success');
+                    getCourses();
                 },
                 error: function(message) {
-                    feedback.html('Alumno No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos');
+                    $.notify('Alumno No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos', 'error');
                 }
             });
         } else {
-            feedback.html('Los campos \'Matrícula\', \'Contraseña\', \'Nombre\' y \'Apellidos\' son obligatorios.')
+            $.notify('Los campos \'Matrícula\', \'Contraseña\', \'Nombre\' y \'Apellidos\' son obligatorios.', 'alert');
         }
 
     });
