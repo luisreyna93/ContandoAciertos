@@ -15,8 +15,8 @@ include_once('../elements/nav.php');
 <body>
     <div id="registroUsuarios" class="container">
         <ul class="nav nav-pills nav-justified">
-            <li class="active"><a data-toggle="pill" href="#Maestros">Maestros</a></li>
-            <li><a data-toggle="pill" href="#Alumnos">Alumnos</a></li>
+            <li class="active" id='maestrosBoton'><a data-toggle="pill" href="#Maestros">Maestros</a></li>
+            <li id='alumnosBoton'><a data-toggle="pill" href="#Alumnos">Alumnos</a></li>
         </ul>
 
         <div class="tab-content">
@@ -79,7 +79,7 @@ include_once('../elements/nav.php');
                     </div>
                 </div>
             </div>
-            <div id="Alumnos" class="tab-pane fade">
+            <div id="Alumnos" class="tab-pane fade in active">
                 <h3 class="text-center">Registro</h3>
                 <div class="row">
                     <div class="col-sm-6 col-sm-offset-3">
@@ -164,6 +164,9 @@ $(document).on('ready', function() {
     var moveToPossibleButton = $("#moverGruposIzquierdaMaestro");
     var moveToActualButton2 = $("#moverGruposDerechaAlumno");
     var moveToPossibleButton2 = $("#moverGruposIzquierdaAlumno");
+    var altaMaestros = $('#Maestros');
+    var maestrosBoton = $('#maestrosBoton');
+    var alumnosBoton = $('#alumnosBoton');
 
     getCourses();
 
@@ -175,6 +178,10 @@ $(document).on('ready', function() {
         success: function(jsonData) {
             if (jsonData.tipo == 'alumno') {
                 window.location.href = 'menu.php';
+            } else if (jsonData.tipo == 'maestro') {
+                altaMaestros.hide();
+                maestrosBoton.hide();
+                alumnosBoton.addClass('active');
             }
         },
         error: function(message) {
