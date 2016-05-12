@@ -20,9 +20,9 @@
                 <li class='dropdown' id='altas'>
                     <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false'>Registros <span class='caret'></span></a>
                     <ul class='dropdown-menu'>
-                        <li><a href='regCursosGrupos.php'>Cursos y Grupos</a></li>
-                        <li><a href='regUsuarios.php'>Usuarios</a></li>
-                        <li><a href='regContenido.php'>Contenido</a></li>
+                        <li id='altasCursos'><a href='regCursosGrupos.php'>Cursos y Grupos</a></li>
+                        <li id='altasUsuarios'><a href='regUsuarios.php'>Usuarios</a></li>
+                        <li id='altasContenido'><a href='regContenido.php'>Contenido</a></li>
                     </ul>
                 </li>
                 <li class='dropdown' id='bajas'>
@@ -57,6 +57,9 @@ $(document).on('ready', function() {
     var menuAltas = $('#altas');
     var menuBajas = $('#bajas');
     var menuEdicion = $('#edicion');
+    var menuAltasCursos = $('#altasCursos');
+    var menuAltasUsuarios = $('#altasUsuarios');
+    var menuAltasContenido = $('#altasContenido');
 
     $.ajax({
         type: 'POST',
@@ -64,10 +67,15 @@ $(document).on('ready', function() {
         dataType: 'json',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
-            if (jsonData.tipo != 'admin') {
+            if (jsonData.tipo == 'alumno') {
                 menuAltas.addClass('hidden');
                 menuBajas.addClass('hidden');
                 menuEdicion.addClass('hidden');
+            } else if (jsonData.tipo == 'maestro') {
+                menuBajas.addClass('hidden');
+                menuEdicion.addClass('hidden');
+                menuAltasCursos.addClass('hidden');
+                menuAltasContenido.addClass('hidden');
             }
         },
         error: function(message) {
