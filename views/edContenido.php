@@ -229,7 +229,7 @@ function getQuestions(value){
     });
 }
 function fillQuestion(value){
-    if(dataPreguntas.length==0){ 
+    if(dataPreguntas.length==0){
         $("#pregunta").val("");
         $("#opcionA").val("");
         $("#opcionB").val("");
@@ -266,6 +266,7 @@ function editarPregunta(){
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
             $.notify("Modificación con éxito", "success");
+            window.location.reload();
         },
         error: function(message) {
         }
