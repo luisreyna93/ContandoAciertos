@@ -2,7 +2,7 @@
 header('Content-type: application/json');
 
 session_start();
-$username = $_SESSION['username'];
+$tipo = $_SESSION['tipo'];
 
 $dbServername = 'localhost';
 $dbUsername = 'root';
@@ -19,7 +19,7 @@ if ($conn->connect_error) {
 } else {
     $idUsuario = $_SESSION['idUsuario'];
     
-    if($username == 'admin') {
+    if($tipo != 'alumno') {
         $sql = "SELECT * FROM Materia";
     }
     else {
