@@ -30,7 +30,7 @@ include_once('../elements/header.php');
     </br></br></br>
     <div class='form-group'>
         <div class='col-xs-5 col-xs-offset-6'>
-            <button id = 'initGame' class='btn btn-default'>Comenzar juego</button>
+            <button id = 'initGame' class="btn btn-lg btn-primary btn-block">Comenzar juego</button>
         </div>
     </div>
   </div>
@@ -58,8 +58,8 @@ include_once('../elements/header.php');
       </div>
       <br><br>
       <div id = 'seccion-control' class='row'>
-        <button id='sigPregunta' class='btn btn-default'>Siguiente</button>
-        <button id='terminar' class='btn btn-default'>Terminar</button>
+        <button id='sigPregunta' class="btn btn-lg btn-primary btn-block">Siguiente</button>
+        <button id='terminar' class='btn btn-lg btn-primary btn-block'>Terminar</button>
       </div>
     </div>
   </div>
@@ -76,11 +76,11 @@ include_once('../elements/header.php');
         var headPregunta = $('#headerPregunta');
 
         var pregunta = 1;
-        
+
         var preguntas = [];
         var siguientePregunta;
         var data;
-        
+
         var puntaje = 0;
 
         cuestionario.hide();
@@ -101,7 +101,7 @@ include_once('../elements/header.php');
                 menu.hide();
                 cuestionario.show();
                 headPregunta.html('Pregunta ' + pregunta + ':');
-                
+
                 for(var i = 0; i < jsonData.numTemas; i++) {
                   preguntas.push(true);
                 }
@@ -111,7 +111,7 @@ include_once('../elements/header.php');
                 }
                 $('#pregunta').html(jsonData[siguientePregunta].pregunta);
                 preguntas[siguientePregunta] = false;
-                
+
                 var opciones = [true, true, true, true];
                 var siguienteOpcion;
                 for(var i = 1; i <= 4; i++) {
@@ -142,7 +142,7 @@ include_once('../elements/header.php');
                   }
                 }
               }
-              
+
               data = jsonData;
             },
             error: function(message) {
@@ -159,18 +159,18 @@ include_once('../elements/header.php');
           else {
             alert('¡Respuesta incorrecta!\n\n La respuesta correcta era: ' + data[siguientePregunta].opcionA);
           }
-          
+
           pregunta += 1;
           // Hacer update a pregunta y respuestas
           headPregunta.html('Pregunta ' + pregunta + ':');
-          
+
           siguientePregunta = Math.floor(Math.random() * data.numTemas);
           while(!preguntas[siguientePregunta]) {
             siguientePregunta = Math.floor(Math.random() * data.numTemas);
           }
           $('#pregunta').html(data[siguientePregunta].pregunta);
           preguntas[siguientePregunta] = false;
-          
+
           var opciones = [true, true, true, true];
           var siguienteOpcion;
           for(var i = 1; i <= 4; i++) {
@@ -215,7 +215,7 @@ include_once('../elements/header.php');
           else {
             alert('¡Respuesta incorrecta!\n\n La respuesta correcta era: ' + data[siguientePregunta].opcionA);
           }
-          
+
           $.ajax({
             type: 'POST',
             url: '../Controllers/createNuevoJuegoAlumno.php',
@@ -229,13 +229,13 @@ include_once('../elements/header.php');
               console.log(errorMsg.statusText);
             }
           });
-          
+
           alert('Fin del cuestionario, tu puntaje fue: ' + puntaje);
-          
+
           headPregunta.html('Fin del Cuestionario');
           window.location.reload();
         });
-        
+
         $.ajax({
             type: 'POST',
             url: '../Controllers/sessionController.php',
@@ -247,7 +247,7 @@ include_once('../elements/header.php');
                 window.location.href = 'logIn.php';
             }
         });
-        
+
         $.ajax({
           type: 'POST',
           url: '../Controllers/getMateriasForUserController.php',
@@ -266,7 +266,7 @@ include_once('../elements/header.php');
           error: function(message) {
           }
         });
-        
+
         $('#selMateria').change(function() {
           if ($('#selMateria').html() != '') {
             var parameters = {
