@@ -173,7 +173,7 @@ $(document).on('ready', function() {
         dataType: 'json',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         success: function(jsonData) {
-            if (jsonData.tipo != 'admin') {
+            if (jsonData.tipo == 'alumno') {
                 window.location.href = 'menu.php';
             }
         },
@@ -336,7 +336,7 @@ $(document).on('ready', function() {
                     getCourses();
                 },
                 error: function(message) {
-                    $.notify('Maestro No Registrado<br>Verifique la existencia previa o la conexión a la Base de Datos', 'error');
+                    $.notify('Maestro No Registrado\nVerifique la existencia previa o la conexión a la Base de Datos', 'error');
                 }
             });
         } else {
