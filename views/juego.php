@@ -94,8 +94,8 @@ include_once('../elements/header.php');
             data: {"idTopic": $('#selTema').val()},
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             success: function(jsonData) {
-              if(jsonData.numTemas == 0) {
-                alert('No hay preguntas para este tema');
+              if(jsonData.numTemas < 10) {
+                alert('No hay suficientes preguntas para este tema');
               }
               else {
                 menu.hide();
